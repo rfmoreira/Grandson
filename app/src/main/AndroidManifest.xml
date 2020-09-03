@@ -11,8 +11,16 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.DadosBancarioColaborador"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".View.LoginGrandson"></activity>
+        <activity
+            android:name=".View.CadastroCliente"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".View.DadosBancarioCliente"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".View.DadosBancarioColaborador"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".View.CadastroColaborador"
             android:windowSoftInputMode="stateAlwaysHidden" />

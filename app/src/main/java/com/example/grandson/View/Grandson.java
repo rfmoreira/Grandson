@@ -20,6 +20,14 @@ public class Grandson extends AppCompatActivity {
 
         btLogin = (Button) findViewById(R.id.btLogin);
         btCadastro = (Button) findViewById(R.id.btCadastro);
+
+        btLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),LoginGrandson.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void onClickCadastro(View V){

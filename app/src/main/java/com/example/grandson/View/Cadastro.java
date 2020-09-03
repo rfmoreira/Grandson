@@ -19,13 +19,25 @@ public class Cadastro extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro);
 
         btColaborador = (Button) findViewById(R.id.btColaborador);
+        btCliente = (Button) findViewById(R.id.btCliente);
 
+        btCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),CadastroCliente.class);
+                startActivity(intent);
+            }
+        });
 
+        btColaborador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),CadastroColaborador.class);
+                startActivity(intent);
+            }
+        });
     }
-    public void onClickCadColab(View v){
-        Intent intent = new Intent(getApplicationContext(),CadastroColaborador.class);
-        startActivity(intent);
-    }
+
 
 
 

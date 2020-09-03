@@ -29,7 +29,6 @@
             android:layout_weight="1"
             android:text="Colaborador"
             android:textSize="40dp"
-            android:onClick="onClickCadColab"
             android:textStyle="bold"
             android:layout_margin="18dp"
             android:background="@drawable/button_select_colaborador"/>

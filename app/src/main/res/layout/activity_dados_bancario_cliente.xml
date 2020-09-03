@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.DadosBancarioColaborador">
+    tools:context=".View.DadosBancarioCliente">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
+                android:layout_margin="1dp"
                 android:layout_weight="0"
                 android:orientation="vertical"
                 android:padding="5dp">
@@ -77,13 +77,13 @@
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:gravity="center_horizontal|center_vertical"
-                        android:text="Informe uma conta para receber a gratificação dos seus serviços"
+                        android:text="Informe um cartão de crédito que será usado para efetuar o pagamento."
                         android:textAlignment="center"
                         android:textColor="@android:color/background_dark"
-                        android:textSize="20sp" />
+                        android:textSize="19sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -106,58 +106,40 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editTextAgencia"
+                    android:id="@+id/editTextNomeCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Agência"
+                    android:hint="Nome"
                     android:inputType="numberDecimal"
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editTextConta"
+                    android:id="@+id/editTextNumCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Conta"
+                    android:hint="Numero do Cartão"
                     android:inputType="numberDecimal"
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/editTextBanco"
+                    android:id="@+id/editTextCodSegCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="Banco"
+                    android:hint="Código de Segurança"
+                    android:inputType="numberDecimal"
+                    android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/editTextValidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:hint="Validade do Cartão"
                     android:inputType="numberDecimal"
                     android:textSize="20sp" />
 
-                <RadioGroup
-                    android:id="@+id/radioGrupTipo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radio_Corrente"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="Corrente"
-                        android:onClick="checkRadioButton"
-                        android:textSize="20sp" />
-
-                    <RadioButton
-                        android:id="@+id/radio_Poupanca"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="checkRadioButton"
-                        android:text="Poupança"
-                        android:textSize="20sp" />
-                </RadioGroup>
 
                 <LinearLayout
                     android:layout_width="match_parent"

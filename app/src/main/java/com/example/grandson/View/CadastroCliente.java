@@ -1,7 +1,5 @@
 package com.example.grandson.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,12 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.grandson.Model.Cep;
+import com.example.grandson.R;
 import com.example.grandson.Services.APIRetrofitService;
 import com.example.grandson.Utils.MetodosCadastro;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
-import com.example.grandson.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class CadastroColaborador extends AppCompatActivity {
+public class CadastroCliente extends AppCompatActivity {
 
 
 
@@ -33,7 +33,7 @@ public class CadastroColaborador extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_colaborador);
+        setContentView(R.layout.activity_cadastro_cliente);
 
         editTextNome = (EditText) findViewById(R.id.editTextNome);
         editTextMail = (EditText) findViewById(R.id.editTextMail);
@@ -92,7 +92,7 @@ public class CadastroColaborador extends AppCompatActivity {
         }else{
             Toast.makeText(this, "E-mail Valido", Toast.LENGTH_SHORT).show();
         }*/
-        Intent intent = new Intent(getApplicationContext(),DadosBancarioColaborador.class);
+        Intent intent = new Intent(getApplicationContext(),DadosBancarioCliente.class);
         startActivity(intent);
     };
 
