@@ -10,8 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".View.LoginGrandson"></activity>
+        android:theme="@style/AppTheme"
+        >
+        <activity android:name=".View.HomeCliente" />
+        <activity android:name=".View.LoginGrandson" />
         <activity
             android:name=".View.CadastroCliente"
             android:windowSoftInputMode="stateAlwaysHidden" />

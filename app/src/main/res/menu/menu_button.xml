@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bt_home"
+        android:icon="@drawable/ic_home"
+        android:title="Início"
+        android:visible="true"/>
+    <item
+        android:id="@+id/bt_cart"
+        android:icon="@drawable/ic_carteira"
+        android:title="Carteira"
+        android:visible="true"/>
+    <item
+        android:id="@+id/bt_perf"
+        android:icon="@drawable/ic_perfil"
+        android:title="Perfil"
+        android:visible="true"/>
+
+
+</menu>
