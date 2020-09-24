@@ -6,34 +6,34 @@ import com.google.gson.annotations.SerializedName;
 public class Cep {
 
     @SerializedName("cep")
-    @Expose
+    //@Expose
     private String cep;
     @SerializedName("logradouro")
-    @Expose
+    //@Expose
     private String logradouro;
     @SerializedName("complemento")
-    @Expose
+    //@Expose
     private String complemento;
     @SerializedName("bairro")
-    @Expose
+    //@Expose
     private String bairro;
     @SerializedName("localidade")
-    @Expose
+    //@Expose
     private String localidade;
     @SerializedName("uf")
-    @Expose
+    //@Expose
     private String uf;
     @SerializedName("unidade")
-    @Expose
+    //@Expose
     private String unidade;
     @SerializedName("ibge")
-    @Expose
+    //@Expose
     private String ibge;
     @SerializedName("gia")
-    @Expose
+    //@Expose
     private String gia;
     @SerializedName("erro")
-    @Expose
+    //@Expose
     private Boolean erro = false;
 
     public Boolean getErro() {

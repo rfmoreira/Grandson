@@ -7,9 +7,14 @@
         android:title="Início"
         android:visible="true"/>
     <item
-        android:id="@+id/bt_cart"
-        android:icon="@drawable/ic_carteira"
-        android:title="Carteira"
+        android:id="@+id/bt_servAgendado"
+        android:icon="@drawable/ic_calendar"
+        android:title="Agendados"
+        android:visible="true"/>
+    <item
+        android:id="@+id/bt_servConcluido"
+        android:icon="@drawable/ic_concluido"
+        android:title="Concluídos"
         android:visible="true"/>
     <item
         android:id="@+id/bt_perf"

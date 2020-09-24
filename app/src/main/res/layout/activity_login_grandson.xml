@@ -84,10 +84,10 @@
                 android:id="@+id/btLogin"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/button_white_login"
-                    android:textAlignment="center"
                 android:text="Entrar"
                 android:textSize="20dp" />
 

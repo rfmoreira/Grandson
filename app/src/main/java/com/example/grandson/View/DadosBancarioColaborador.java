@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.grandson.Utils.MetodosCadastro;
@@ -16,12 +18,17 @@ import com.example.grandson.Utils.MetodosCadastro;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DadosBancarioColaborador extends AppCompatActivity {
     private TextView textViewNome;
     private EditText editTextCpf, editTextAgencia, editTextConta, editTextBanco;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
+    private Spinner spinnerBancos;
     private Object radioCheck;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +39,18 @@ public class DadosBancarioColaborador extends AppCompatActivity {
         editTextConta = (EditText) findViewById(R.id.editTextConta);
         editTextBanco = (EditText) findViewById(R.id.editTextBanco);
         radioGroup = (RadioGroup) findViewById(R.id.radioGrupTipo);
+        spinnerBancos = (Spinner) findViewById(R.id.spinnerBancos);
+        List<String> bancos = new ArrayList<>();
+        bancos.add("Banco 1");
+        bancos.add("Banco 2");
+        bancos.add("Banco 3");
+
+
+
+        ArrayAdapter<String> adapter;
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,bancos);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerBancos.setAdapter(adapter);
 
         // MASCARA CPF
         SimpleMaskFormatter simpleMaskCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");

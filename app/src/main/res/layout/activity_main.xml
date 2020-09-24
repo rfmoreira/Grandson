@@ -29,7 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_blue_cadastro"
             android:filterTouchesWhenObscured="false"
-            android:text="Login"
+            android:text="Entrar"
             android:textAlignment="center"
             android:layout_marginHorizontal="28dp"
             android:textColor="#FFFFFF"
