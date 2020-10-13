@@ -94,51 +94,127 @@
                 android:layout_weight="0"
                 android:orientation="vertical">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editTextCpf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginEnd="8dp"
                     android:hint="CPF"
-                    android:inputType="numberDecimal"
-                    android:textSize="20sp" />
+                    app:placeholderText="123.456.789-10"
+                    app:placeholderTextColor="?attr/colorControlNormal"
+                    >
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="100"
+                        android:inputType="numberDecimal"
+                        android:textSize="20dp"
+                        android:digits="0123456789"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editTextNomeCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:hint="Nome"
-                    android:inputType="numberDecimal"
-                    android:textSize="20sp" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nome"
+                        android:maxLength="100"
+                        android:inputType="text"
+                        android:textSize="20dp"
+                        android:digits="abcdefghijklmnopqrstuvxwyzABCDEFGHIJKLMNOPQRSTUVXWYZ "
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/editTextNumCartao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:hint="Numero do Cartão"
-                    android:inputType="numberDecimal"
-                    android:textSize="20sp" />
+                    app:placeholderText="1234 4567 8910 1112"
+                    app:placeholderTextColor="?attr/colorControlNormal"
+                    >
 
-                <EditText
-                    android:id="@+id/editTextCodSegCartao"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="100"
+                        android:inputType="numberDecimal"
+                        android:textSize="20dp"
+                        android:digits="1234567890"
+                        android:drawableRight="@drawable/ic_credit_card"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_margin="8dp"
-                    android:hint="Código de Segurança"
-                    android:inputType="numberDecimal"
-                    android:textSize="20sp" />
-                <EditText
-                    android:id="@+id/editTextValidade"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:hint="Validade do Cartão"
-                    android:inputType="numberDecimal"
-                    android:textSize="20sp" />
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/editTextValidade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Data Validade"
+                        app:placeholderText="MM/AAAA"
+                        app:placeholderTextColor="?attr/colorControlNormal"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="7"
+                            android:inputType="numberDecimal"
+                            android:textSize="20dp"
+                            android:digits="1234567890"
+                            android:drawableRight="@drawable/ic_calendar"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/editTextCodSegCartao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CVV"
+                            android:maxLength="4"
+                            android:inputType="numberDecimal"
+                            android:textSize="20dp"
+                            android:digits="1234567890"
+                            android:drawableRight="@drawable/ic_lock"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                </LinearLayout>
+
+
+
 
 
                 <LinearLayout

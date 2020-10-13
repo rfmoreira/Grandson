@@ -1,5 +1,6 @@
 package com.example.grandson.Utils;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.Patterns;
 
@@ -109,8 +110,10 @@ public  class MetodosCadastro {
 
     //METODO PARA RETIRADA DE MASCARAS
     public static String unMask(String value){
-        String result = value.trim().replaceAll("[.,-]+","");
+        String result = value.trim().replaceAll("[().\\s,-]+","");
         return result;
     }
+
+
 
 }

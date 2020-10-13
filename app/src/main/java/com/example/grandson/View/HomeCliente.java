@@ -11,12 +11,17 @@ import com.example.grandson.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeCliente extends AppCompatActivity {
-
+    private String auth;
     private BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_cliente);
+
+        /*SharedPreferences pref = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        auth = pref.getString("token","HomeCliente");
+
+        Log.i("Auth :", auth);*/
 
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setSelectedItemId(R.id.bt_home); // Setando botao Home como selecionado
@@ -40,7 +45,7 @@ public class HomeCliente extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_home,fragment).commit();
                             break;
                         case R.id.bt_servAgendado:
-                            fragment = new ServicosSolicitadosFragment();
+                            fragment = new ServicosAgendadosFragment();
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_home,fragment).commit();
                             break;
                         case R.id.bt_servConcluido:

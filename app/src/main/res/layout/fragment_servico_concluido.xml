@@ -68,26 +68,16 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_margin="5dp"
-
             android:orientation="vertical">
 
             <ListView
-                android:id="@+id/listViewParceiro"
+                android:id="@+id/listServConcluido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top">
 
             </ListView>
 
-            <TextView
-                android:id="@+id/textInfo"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:text="Você ainda não solicitou nenhuma companhia, agende um parceiro clicando aqui."
-                android:visibility="invisible" />
         </LinearLayout>
 
     </LinearLayout>

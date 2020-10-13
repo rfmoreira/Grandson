@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="top"
-    tools:context=".View.ServicosSolicitadosFragment">
+    tools:context=".View.ServicosAgendadosFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -70,7 +70,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_margin="5dp"
-
             android:orientation="vertical">
 
             <ListView
@@ -78,9 +77,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:clickable="true">
+                android:clickable="true"></ListView>
 
-            </ListView>
+            <TextView
+                android:id="@+id/textInfo"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:text="Você não tem companhia agendadas, corra e agende."
+                android:visibility="invisible" />
 
 
         </LinearLayout>

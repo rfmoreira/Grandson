@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.grandson.Api.RetrofitClientCEP;
 import com.example.grandson.Model.Cep;
-import com.example.grandson.Services.APIRetrofitService;
+import com.example.grandson.Services.RetrofitServiceCEP;
 import com.example.grandson.Utils.MetodosCadastro;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
@@ -19,17 +19,15 @@ import com.example.grandson.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
 
 
 public class CadastroColaborador extends AppCompatActivity {
 
 
 
-
-    private Retrofit retrofitCEP;
     private EditText editTextNome,editTextMail, editTextTelefone,editTextCep,editTextEndereco,editTextSenha1,editTextSenha2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +46,9 @@ public class CadastroColaborador extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(b){
-                    Log.i("Foco","Focado");
                 }else {
-                    String cep = editTextCep
-                            .getText()
-                            .toString()
-                            .trim()
-                            .replaceAll("[.-]","");
-                    Log.i("CEP",cep);
+                    String cep = editTextCep.getText().toString();
+                    cep = MetodosCadastro.unMask(cep);
                     if (MetodosCadastro.isCEP(cep)){
                     consultarCEP(cep);
                     }else {
@@ -65,11 +58,6 @@ public class CadastroColaborador extends AppCompatActivity {
             }
         });
 
-        //Declaracão deo Retrofit para consultar CEP
-        retrofitCEP = new Retrofit.Builder()
-                .baseUrl(APIRetrofitService.BASE_URL_CEP)           //endereço do webservice Consulta CEP
-                .addConverterFactory(GsonConverterFactory.create()) //conversor
-                .build();
 
         // MASCARA TELEFONE
         SimpleMaskFormatter simpleMaskTelefone = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
@@ -98,49 +86,35 @@ public class CadastroColaborador extends AppCompatActivity {
 
 
     private void consultarCEP(String sCep) {
-        //String sCep = txtCEP.getText().toString().trim();
-
-        //removendo o ponto e o traço do padrão CEP
-        //sCep = sCep.replaceAll("[.-]+", "");
 
         //instanciando a interface
-        APIRetrofitService restService = retrofitCEP.create(APIRetrofitService.class);
+        RetrofitServiceCEP restService = RetrofitClientCEP.getService();
 
         //passando os dados para consulta
         Call<Cep> call = restService.consultarCEP(sCep);
-
-        //exibindo a progressbar
-        //progressBarCEP.setVisibility(View.VISIBLE);
 
         //colocando a requisição na fila para execução
         call.enqueue(new Callback<Cep>() {
             @Override
             public void onResponse(Call<Cep> call, Response<Cep> response) {
                 if (response.isSuccessful()) {
-
                     Cep cep = response.body();
                     if (!cep.getErro()){
                     editTextEndereco.setText(cep.getLogradouro() + " " + cep.getBairro() +" "+ cep.getLocalidade());
-
                     Toast.makeText(getApplicationContext(), "CEP consultado com sucesso" , Toast.LENGTH_LONG).show();
-                    Log.i("Resposta ", cep.toString() );
+
                     }else{
                         editTextCep.setError("CEP Invalido");
                         editTextCep.requestFocus();
                     }
-
                 }
             }
-
             @Override
             public void onFailure(Call<Cep> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Ocorreu um erro ao tentar consultar o CEP. Erro: " + t.getMessage(), Toast.LENGTH_LONG).show();
-
-
             }
         });
     }
-
 
 
 }

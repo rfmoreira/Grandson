@@ -31,7 +31,7 @@ public class Grandson extends AppCompatActivity {
     }
 
     public void onClickCadastro(View V){
-        Intent intent = new Intent(getApplicationContext(),Cadastro.class);
+        Intent intent = new Intent(getApplicationContext(),CadastroCliente.class);
         startActivity(intent);
     }
 }

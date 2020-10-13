@@ -1,12 +1,15 @@
 package com.example.grandson.View;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +19,30 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.grandson.Model.Parceiro;
+import com.example.grandson.Api.RetrofitClientGrandson;
+import com.example.grandson.Model.ListaParceiro;
 import com.example.grandson.R;
-import com.example.grandson.Utils.AdapterListVewCliente;
+import com.example.grandson.Services.RetrofitServiceGrandson;
+import com.example.grandson.Utils.AdapterListVewHomeCliente;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeClienteFragment extends Fragment {
 
     ListView listView;
-    ArrayList<Parceiro> lParceiro;
-    ArrayList<Parceiro> paceirosFiltrados = new ArrayList<>();
+    List<ListaParceiro> lListaParceiro = new ArrayList<>();
+    List<ListaParceiro> paceirosFiltrados = new ArrayList<>();
     //int imagens[] = {};
-    TextView textView;
+
+    TextView textView, nomeCabecalho;
     SearchView searchParceiro;
+
+    private String auth;
 
 
 
@@ -38,34 +51,30 @@ public class HomeClienteFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        lParceiro = preencherList();
-        paceirosFiltrados.addAll(lParceiro);
 
+
+        SharedPreferences pref = getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        auth = pref.getString("token","");
+
+        Log.i("Auth :", auth);
+        listarParceiros();
         //Assosinado entradas da tela
         listView =(ListView) view.findViewById(R.id.listViewParceiro);
         textView = (TextView) view.findViewById(R.id.textInfo);
         searchParceiro = (SearchView) view.findViewById(R.id.searchParceiro);
+        nomeCabecalho = (TextView) view.findViewById(R.id.nomeCabecalho);
+
+        //String nome = getActivity().getIntent().getStringExtra("nome");
+        nomeCabecalho.setText("Nome");
 
 
-        // Verificando se lista esta vazia
-        if (lParceiro.isEmpty()){
-            textView.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.INVISIBLE);
-            AdapterListVewCliente adapter = new AdapterListVewCliente(this.getActivity(),null);
-        }else {
-            listView.setVisibility(View.VISIBLE);
-            // Chamando Adaptador para preenchimento do list View
-            AdapterListVewCliente adapter = new AdapterListVewCliente(this.getContext(),paceirosFiltrados);
-            // Setenado adptador no list view
-            listView.setAdapter(adapter);
 
-        }
 
         // Metodo de onClick do list view
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(view.getContext(), "Posição: "+ lParceiro.get(position).getNome(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "Posição: "+ lListaParceiro.get(position).getNome(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(view.getContext(),SolicitaServico.class);
                 startActivity(intent);
             }
@@ -87,13 +96,13 @@ public class HomeClienteFragment extends Fragment {
     }
 
     // Metodo para Preencher ListView
-    private ArrayList<Parceiro> preencherList() {
-        ArrayList<Parceiro> list = new ArrayList<Parceiro>();
-        Parceiro p = new Parceiro();
-        Parceiro p1 = new Parceiro();
-        Parceiro p2 = new Parceiro();
-        Parceiro p3 = new Parceiro();
-        Parceiro p4 = new Parceiro();
+    private ArrayList<ListaParceiro> preencherList() {
+        ArrayList<ListaParceiro> list = new ArrayList<ListaParceiro>();
+       /* ListaParceiro p = new ListaParceiro();
+        ListaParceiro p1 = new ListaParceiro();
+        ListaParceiro p2 = new ListaParceiro();
+        ListaParceiro p3 = new ListaParceiro();
+        ListaParceiro p4 = new ListaParceiro();
         p.setNome("Rafael");
         list.add(p);
         p1.setNome("Luan");
@@ -103,19 +112,71 @@ public class HomeClienteFragment extends Fragment {
         p3.setNome("Alessandro");
         list.add(p3);
         p4.setNome("Alex");
-        list.add(p4);
+        list.add(p4);*/
         return list;
-
     }
 
     public void searchContato(String name){
         paceirosFiltrados.clear();;
-        for( Parceiro c: lParceiro){
+        for( ListaParceiro c: lListaParceiro){
             if(c.getNome().toLowerCase().contains(name.toLowerCase())){
                 paceirosFiltrados.add(c);
             }
             listView.invalidateViews();
         }
+    }
+
+    private void listarParceiros(){
+
+        //Instanciando a interface
+        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+        //Passando os dados para consulta
+        Call<List<ListaParceiro>> call = restService.listarParceiros("Bearer "+auth);
+
+        call.enqueue(new Callback<List<ListaParceiro>>() {
+            @Override
+            public void onResponse(Call<List<ListaParceiro>> call, Response<List<ListaParceiro>> response) {
+
+                if(response.isSuccessful()){
+                    lListaParceiro.addAll(response.body());
+                    //Log.i("Response", lListaParceiro.get(0).getNota());
+
+
+                    // Verificando se lista esta vazia
+                    if (lListaParceiro.isEmpty()){
+                        Log.i("Empty", "Lista vazia");
+                        textView.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.INVISIBLE);
+                        AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),null);
+                    }else {
+                        paceirosFiltrados.addAll(lListaParceiro);
+                        listView.setVisibility(View.VISIBLE);
+                        // Chamando Adaptador para preenchimento do list View
+                        AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),paceirosFiltrados);
+                        // Setenado adptador no list view
+                        listView.setAdapter(adapter);
+
+                    }
+
+
+
+                }else {
+                    Toast.makeText(getContext(), "Usuário ou Senha Inválido", Toast.LENGTH_SHORT).show();
+                    Log.i("Erro:  ",response.message());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ListaParceiro>> call, Throwable t) {
+                Toast.makeText(getContext(), "Erro", Toast.LENGTH_SHORT).show();
+                Log.i("Falha:  ",t.getMessage());
+
+
+            }
+        });
+
+
     }
 
 

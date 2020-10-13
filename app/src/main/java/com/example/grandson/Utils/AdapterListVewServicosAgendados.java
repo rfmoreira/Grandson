@@ -1,7 +1,6 @@
 package com.example.grandson.Utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.grandson.Model.Parceiro;
+import com.example.grandson.Model.ListaParceiro;
+import com.example.grandson.Model.ServicosAgendados;
 import com.example.grandson.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
-
-public class AdapterListVewCliente extends ArrayAdapter<Parceiro> {
+public class AdapterListVewServicosAgendados extends ArrayAdapter<ServicosAgendados> {
 
     Context context;
-    ArrayList<Parceiro> lParceiros;
+    List<ServicosAgendados> lServicosAgendados;
     //int lImagem[];
 
-    public AdapterListVewCliente(@NonNull Context context, ArrayList<Parceiro> lParceiros) {
-        super(context,R.layout.row_list_view_cliente,lParceiros);
+    public AdapterListVewServicosAgendados(@NonNull Context context, List<ServicosAgendados> lServicosAgendados) {
+        super(context, R.layout.row_list_view_cliente, lServicosAgendados);
         this.context = context;
-        this.lParceiros = lParceiros;
+        this.lServicosAgendados = lServicosAgendados;
     }
 
     @Override
@@ -34,10 +33,12 @@ public class AdapterListVewCliente extends ArrayAdapter<Parceiro> {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.row_list_view_cliente, parent, false);
         TextView nomeParceiro = view.findViewById(R.id.NomeParceiro);
-        Parceiro p = lParceiros.get(position);
+        TextView nota = view.findViewById(R.id.txtAvaliacao);
+        ServicosAgendados p = lServicosAgendados.get(position);
         //Log.i("Nome Parciero", p.getNome());
 
         nomeParceiro.setText(p.getNome());
+        nota.setText(p.getNota());
 
         return view;
     }
