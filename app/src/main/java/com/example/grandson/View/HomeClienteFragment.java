@@ -1,6 +1,7 @@
 package com.example.grandson.View;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -56,6 +57,8 @@ public class HomeClienteFragment extends Fragment {
         SharedPreferences pref = getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         auth = pref.getString("token","");
 
+        //getActivity().onBackPressed();
+
         Log.i("Auth :", auth);
         listarParceiros();
         //Assosinado entradas da tela
@@ -74,8 +77,9 @@ public class HomeClienteFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(view.getContext(), "Posição: "+ lListaParceiro.get(position).getNome(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(view.getContext(),SolicitaServico.class);
+                Toast.makeText(view.getContext(), "Posição: "+ lListaParceiro.get(position).getId(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(),PerfilParceiro.class);
+                intent.putExtra("idParceiro",lListaParceiro.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -176,8 +180,8 @@ public class HomeClienteFragment extends Fragment {
             }
         });
 
-
     }
+
 
 
     @Override
@@ -187,4 +191,9 @@ public class HomeClienteFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
+
+
+
+
+
 }

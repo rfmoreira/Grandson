@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.example.grandson.Api.RetrofitClientCEP;
 import com.example.grandson.Model.Cep;
 import com.example.grandson.Model.FormCadastroCliente;
-import com.example.grandson.Model.Foto;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceCEP;
 import com.example.grandson.Utils.MetodosCadastro;

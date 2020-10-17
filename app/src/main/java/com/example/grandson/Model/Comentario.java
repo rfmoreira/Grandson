@@ -1,13 +1,19 @@
 package com.example.grandson.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Comentario {
 
+    @SerializedName("id")
     private int id;
+    @SerializedName("nomePessoa")
     private String nomePessoa;
+    @SerializedName("comentario")
     private String comentario;
-    private int ftPerfil;
+    @SerializedName("foto")
+    private String ftPerfil;
 
-    public Comentario(int id, String nomePessoa, String comentario, int ftPerfil) {
+    public Comentario(int id, String nomePessoa, String comentario, String ftPerfil) {
         this.id = id;
         this.nomePessoa = nomePessoa;
         this.comentario = comentario;
@@ -38,11 +44,11 @@ public class Comentario {
         this.comentario = comentario;
     }
 
-    public int getFtPerfil() {
+    public String getFtPerfil() {
         return ftPerfil;
     }
 
-    public void setFtPerfil(int ftPerfil) {
+    public void setFtPerfil(String ftPerfil) {
         this.ftPerfil = ftPerfil;
     }
 }

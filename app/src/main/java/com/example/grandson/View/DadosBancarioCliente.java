@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.FormCadastroCliente;
-import com.example.grandson.Model.ImageInfo;
+import com.example.grandson.Model.Foto;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.FileUtil;
@@ -162,6 +162,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
                             salvarFoto(cliente.getId());
                         }
                         Intent intent = new Intent(DadosBancarioCliente.this,ApresentacaoGrandson.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         progressDialog.dismiss();
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -198,7 +199,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
         //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
 
         //Passando os dados para consulta
-        Call<ImageInfo> call = restService.uploadImagem(body,id);
+        Call<Foto> call = restService.uploadImagem(body,id);
 
         Gson gson = new Gson();
         String json = gson.toJson(body);
@@ -206,12 +207,12 @@ public class DadosBancarioCliente extends AppCompatActivity {
         /*Log.i("Json",json);
         Log.i("GEt Name",call.toString());
         Log.i("requestBody",requestBody.toString());*/
-        call.enqueue(new Callback<ImageInfo>() {
+        call.enqueue(new Callback<Foto>() {
             @Override
-            public void onResponse(Call<ImageInfo> call, Response<ImageInfo> response) {
+            public void onResponse(Call<Foto> call, Response<Foto> response) {
                 if(response.isSuccessful()){
-                    ImageInfo imageInfo = response.body();
-                    Log.i("Sucesso",imageInfo.getData());
+                    Foto foto = response.body();
+                    Log.i("Sucesso", foto.getData());
 
                 }else {
                     //Toast.makeText(DadosBancarioCliente.this, "Erro"+response.message(), Toast.LENGTH_SHORT).show();
@@ -220,7 +221,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ImageInfo> call, Throwable t) {
+            public void onFailure(Call<Foto> call, Throwable t) {
                 //Toast.makeText(DadosBancarioCliente.this, "Erro 2"+ t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("Erro 2",t.getMessage());
             }

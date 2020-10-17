@@ -10,24 +10,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.grandson.Api.RetrofitClientCEP;
 import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.Auth;
-import com.example.grandson.Model.Cep;
-import com.example.grandson.Model.Cliente;
-import com.example.grandson.Model.Login;
+import com.example.grandson.Model.FormLogin;
 import com.example.grandson.R;
-import com.example.grandson.Services.RetrofitServiceCEP;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.MetodosCadastro;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +31,7 @@ public class LoginGrandson extends AppCompatActivity {
     private Auth auth;
     private boolean isLogin = false;
     private TextInputLayout editTextUsuario, editTextSenha;
-    private Login login;
+    private FormLogin formLogin;
     private ProgressDialog progressDialog;
     Handler handler = new Handler();
 
@@ -88,7 +80,7 @@ public class LoginGrandson extends AppCompatActivity {
                     editTextSenha.setError("Campo Vazio !");
                     editTextSenha.getEditText().requestFocus();
                 }else {
-                    login =new Login(editTextUsuario.getEditText().getText().toString()
+                    formLogin =new FormLogin(editTextUsuario.getEditText().getText().toString()
                             ,editTextSenha.getEditText().getText().toString());
                     //Inicializando progress bar
                     progressDialog = new ProgressDialog(LoginGrandson.this);
@@ -96,19 +88,19 @@ public class LoginGrandson extends AppCompatActivity {
                     progressDialog.show();
                     progressDialog.setContentView(R.layout.progress_dialog);
                     progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                    fazerLogin(login);
+                    fazerLogin(formLogin);
 
                 }
             }
         }
     }
 
-    private void fazerLogin(Login login){
+    private void fazerLogin(FormLogin formLogin){
 
         //Instanciando a interface
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
         //Passando os dados para consulta
-        Call<Auth> call = restService.loginCliente(login);
+        Call<Auth> call = restService.loginCliente(formLogin);
 
         call.enqueue(new Callback<Auth>() {
             @Override
@@ -123,6 +115,7 @@ public class LoginGrandson extends AppCompatActivity {
                     ed.putString("token",auth.getToken());
                     ed.apply();
                     Intent intent = new Intent(LoginGrandson.this, HomeCliente.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     progressDialog.dismiss();
 

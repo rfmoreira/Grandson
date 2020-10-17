@@ -1,43 +1,32 @@
 package com.example.grandson.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Base64;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Foto implements Parcelable {
+public class Foto {
 
+    @SerializedName("id")
+    @Expose
+    private Integer id;
     @SerializedName("nome")
+    @Expose
     private String nome;
     @SerializedName("type")
+    @Expose
     private String type;
     @SerializedName("data")
+    @Expose
     private String data;
 
-    public Foto(String nome, String type, String dataString) {
-        this.nome = nome;
-        this.type = type;
-        this.data = dataString;
+    public Integer getId() {
+        return id;
     }
 
-    protected Foto(Parcel in) {
-        nome = in.readString();
-        type = in.readString();
-        data = in.readString();
+    public void setId(Integer id) {
+        this.id = id;
     }
-
-    public static final Creator<Foto> CREATOR = new Creator<Foto>() {
-        @Override
-        public Foto createFromParcel(Parcel in) {
-            return new Foto(in);
-        }
-
-        @Override
-        public Foto[] newArray(int size) {
-            return new Foto[size];
-        }
-    };
 
     public String getNome() {
         return nome;
@@ -63,23 +52,4 @@ public class Foto implements Parcelable {
         this.data = data;
     }
 
-    public String getDataString() {
-        return data;
-    }
-
-    public void setDataString(String dataString) {
-        this.data = dataString;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(nome);
-        parcel.writeString(type);
-        parcel.writeString(data);
-    }
 }

@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.EditarCartaoCredito"></activity>
+        <activity android:name=".View.PerfilParceiro"></activity>
+        <activity android:name=".View.EditarSenha" />
+        <activity android:name=".View.EditarCartaoCredito" />
         <activity android:name=".View.CadastroClienteFoto" />
         <activity android:name=".View.CadastroCliente2" />
         <activity android:name=".View.ApresentacaoGrandson" />

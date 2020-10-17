@@ -23,7 +23,8 @@ public class ApresentacaoGrandson extends AppCompatActivity {
         btnApAvanc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),HomeCliente.class);
+                Intent intent = new Intent(view.getContext(),LoginGrandson.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -33,6 +34,7 @@ public class ApresentacaoGrandson extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(ApresentacaoGrandson.this,LoginGrandson.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

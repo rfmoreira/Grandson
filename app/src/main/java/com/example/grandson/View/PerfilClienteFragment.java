@@ -17,35 +17,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grandson.Api.RetrofitClientGrandson;
-import com.example.grandson.Model.Auth;
 import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.Comentario;
-import com.example.grandson.Model.FormCadastroCliente;
 import com.example.grandson.Model.Foto;
-import com.example.grandson.Model.ImageInfo;
-import com.example.grandson.Model.Login;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.AdapterListViewComentario;
+import com.example.grandson.Utils.FileUtil;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,7 +57,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class PerfilClienteFragment extends Fragment {
 
-    private Button bt_edit_credCard,bt_edit_senha,bt_salvar_cadastro,bt_edit_cadastro,bt_sair;
+    private Button bt_edit_credCard,bt_edit_senha,bt_salvar_cadastro,bt_edit_cadastro,bt_sair,bt_salvar_foto;
     private ListView listViewComentarios;
     private ArrayList<Comentario> listaCometarios;
     private FloatingActionButton bt_edit_image;
@@ -74,12 +76,14 @@ public class PerfilClienteFragment extends Fragment {
     private String auth;
     private Cliente cliente;
 
+    private File file;
+
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //TOKEN
-        SharedPreferences pref = getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         auth = pref.getString("token","");
 
         //Associando entradas da tela
@@ -110,16 +114,14 @@ public class PerfilClienteFragment extends Fragment {
         bt_salvar_cadastro = (Button) view.findViewById(R.id.bt_salvar_cadastro);
         bt_edit_cadastro = (Button) view.findViewById(R.id.bt_edit_cadastro);
         bt_sair = (Button) view.findViewById(R.id.bt_sair);
+        bt_salvar_foto = (Button) view.findViewById(R.id.bt_salvar_foto);
 
         //DADOS PAGAMENTO
-
         /*editTextCpf = (TextInputLayout) view.findViewById(R.id.editTextCpf);
         editTextNomeCartao = (TextInputLayout) view.findViewById(R.id.editTextNomeCartao);
         editTextNumCartao = (TextInputLayout) view.findViewById(R.id.editTextNumCartao);
         editTextCodSegCartao = (TextInputLayout) view.findViewById(R.id.editTextCodSegCartao);
         editTextValidade = (TextInputLayout) view.findViewById(R.id.editTextValidade);*/
-
-
 
         //Preenchendo Lista de comentarios
         listaCometarios = preencherList();
@@ -133,9 +135,6 @@ public class PerfilClienteFragment extends Fragment {
             // Setenado adptador no list view
             listViewComentarios.setAdapter(adapter);
         }
-
-
-
 
         //Botao de editar imagem de Perfil
         bt_edit_image.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +151,41 @@ public class PerfilClienteFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),EditarCartaoCredito.class);
                 startActivity(intent);
+            }
+        });
+
+        // Botao Sair
+        bt_sair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),LoginGrandson.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                pref.edit().clear().commit();
+
+            }
+        });
+
+        //Botao Editar Senha
+        bt_edit_senha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),EditarSenha.class);
+                startActivity(intent);
+            }
+        });
+
+        bt_edit_cadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                habilitarCampos();
+            }
+        });
+
+        bt_salvar_foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                salvarFoto();
             }
         });
 
@@ -175,17 +209,38 @@ public class PerfilClienteFragment extends Fragment {
 
     }
 
+    //Metodo para edicao de cadastro
+    private void habilitarCampos() {
+        //DADOS PESSOAIS
+        textInputNome.getEditText().setFocusableInTouchMode(true);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textInputNome.getEditText(), InputMethodManager.SHOW_IMPLICIT);
+        textInputMail.getEditText().setFocusableInTouchMode(true);
+        textInputTelefone.getEditText().setFocusableInTouchMode(true);
+
+        //ENDEREÇO
+        textInputCep.getEditText().setFocusableInTouchMode(true);
+        textLogradouro.getEditText().setFocusableInTouchMode(true);
+        textInputNumero.getEditText().setFocusableInTouchMode(true);
+        textInputComplemento.getEditText().setFocusableInTouchMode(true);
+        textInputBairro.getEditText().setFocusableInTouchMode(true);
+        textInputEstado.getEditText().setFocusableInTouchMode(true);
+
+        bt_edit_cadastro.setEnabled(false);
+        bt_salvar_cadastro.setEnabled(true);
+
+    }
+
     //Editar imagem de Perfil
     private void procurarImagem() {
-        Intent intent = new Intent();
+        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
+        startActivityForResult(Intent.createChooser(intent,"Selecione Imagem"), 1);
 
     }
 
 
-    // Setando imagem de perfil e Salvando
+    // Setando imagem de Perfil
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -193,6 +248,7 @@ public class PerfilClienteFragment extends Fragment {
         if(requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
             imagenUri = data.getData();
 
+            bt_salvar_foto.setVisibility(View.VISIBLE);
 
             //File file = data.get
             try {
@@ -230,7 +286,43 @@ public class PerfilClienteFragment extends Fragment {
         }
     }
 
+    public void salvarFoto(){
+        file = FileUtil.getFile(getContext(),imagenUri);
+        final RequestBody requestBody = RequestBody.create(MediaType.parse(getContext().getContentResolver().getType(imagenUri)),file);
+        final MultipartBody.Part body = MultipartBody.Part.createFormData("foto",file.getName(),requestBody);
 
+        //Instanciando a interface
+        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+
+        //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
+
+        //Passando os dados para consulta
+        Call<Foto> call = restService.alterarFotoCliente("Bearer "+ auth,body);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(body);
+
+        Log.i("Json",json);
+        Log.i("GEt Name",file.getName());
+        Log.i("type",getContext().getContentResolver().getType(imagenUri));
+
+        call.enqueue(new Callback<Foto>() {
+            @Override
+            public void onResponse(Call<Foto> call, Response<Foto> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "Foto Alterada com sucesso", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "Erro" + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Foto> call, Throwable t) {
+                Toast.makeText(getContext(), "Erro Interno", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
     // Metodo para Preencher ListView
     private ArrayList<Comentario> preencherList() {
@@ -260,7 +352,7 @@ public class PerfilClienteFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil_cliente, container, false);
     }
-
+    // Metodo para preenchimento dos dados de perfil
     private void getPerfil(){
         Log.i("Auth ",auth);
         //Instanciando a interface
@@ -293,14 +385,14 @@ public class PerfilClienteFragment extends Fragment {
                    //editTextNomeCartao.getEditText().setText(cliente.get);
 
                }else {
-                   Log.i("Erro 1 ",response.message());
+                   Log.i("Erro Requisição",response.message());
                }
            }
 
            @Override
            public void onFailure(Call<Cliente> call, Throwable t) {
 
-               Log.i("Erro 2 ",t.getMessage());
+               Log.i("Erro Servidor",t.getMessage());
 
            }
        });
@@ -308,43 +400,36 @@ public class PerfilClienteFragment extends Fragment {
 
     }
 
+    // Buscar Foto de Perfil
     private void getFoto(){
 
         //Instanciando a interface
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
         //Passando os dados para consulta
-        Call<ImageInfo> call = restService.getFoto("Bearer "+auth);
+        Call<Foto> call = restService.getFoto("Bearer "+auth);
 
-        call.enqueue(new Callback<ImageInfo>() {
+        call.enqueue(new Callback<Foto>() {
             @Override
-            public void onResponse(Call<ImageInfo> call, Response<ImageInfo> response) {
-
-
-                Log.i("RESPONSE", response.toString());
+            public void onResponse(Call<Foto> call, Response<Foto> response) {
 
                 if(response.isSuccessful()){
 
-                    ImageInfo imageInfo = response.body();
-
+                    Foto foto = response.body();
                     //Decondificando imagem recebida do JSON
-                    byte[]  stringDecodificada = Base64.decode(imageInfo.getData(), Base64.DEFAULT);
+                    byte[]  stringDecodificada = Base64.decode(foto.getData(), Base64.DEFAULT);
                     imgbtmap = BitmapFactory.decodeByteArray(stringDecodificada, 0, stringDecodificada.length);
 
                     imgPerf.setImageBitmap(imgbtmap);
-
                 }else {
-                    Toast.makeText(getContext(), "Usuário ou Senha Inválido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Foto não cadastrada", Toast.LENGTH_SHORT).show();
                     Log.i("Erro:  ",response.message());
-
-
                 }
             }
 
             @Override
-            public void onFailure(Call<ImageInfo> call, Throwable t) {
+            public void onFailure(Call<Foto> call, Throwable t) {
                 Toast.makeText(getContext(), "Erro", Toast.LENGTH_SHORT).show();
                 Log.i("Falha:  ",t.getMessage());
-
             }
         });
 

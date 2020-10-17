@@ -65,6 +65,9 @@ public class RetrofitClientGrandson {
     // URL MOCK: "https://192.168.1.8:3000/api/cliente/"
     // URL API GRANDSON "http://192.168.1.8:8080/api/cliente/"
     // URL API FOTO http://192.168.1.7:8080/
+    // URL API LUCAS http://192.168.1.26:8080/api/
+    // URL API LUCAS http://192.168.1.26:8080/api/  http://10.0.0.102:8080/api/
+
 
     public static RetrofitServiceGrandson getService(){
 

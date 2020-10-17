@@ -67,12 +67,25 @@
                        />
 
 
+
                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <Button
+                    android:id="@+id/bt_salvar_foto"
+                    android:layout_width="150dp"
+                    android:layout_height="29dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_white_login"
+                    android:text="Salvar Foto"
+                    android:visibility="invisible" />
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
                     android:layout_gravity="center_vertical|center_horizontal">
+
+
 
                     <TextView
                         android:id="@+id/nomeCliente"
@@ -117,7 +130,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="Dados Pessoais"
                     android:textColor="@color/black"
@@ -425,6 +438,18 @@
                 android:layout_height="250dp"
                 android:orientation="vertical"
                 android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:text="Comentários"
+                    android:textColor="@color/black"
+                    android:textSize="22dp"
+                    android:textStyle="bold" />
+
                 <ListView
                     android:id="@+id/listViewComentarios"
                     android:layout_width="match_parent"

@@ -4,14 +4,14 @@ import android.text.Editable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Login {
+public class FormLogin {
 
     @SerializedName("email")
     private String email;
     @SerializedName("senha")
     private String senha;
 
-    public Login(String email, String senha) {
+    public FormLogin(String email, String senha) {
         this.email = email;
         this.senha = senha;
     }

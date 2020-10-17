@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,10 +16,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.grandson.Api.RetrofitClientGrandson;
-import com.example.grandson.Model.ImageInfo;
+import com.example.grandson.Model.Foto;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.FileUtil;
@@ -208,7 +206,7 @@ public class CadastroClienteFoto extends AppCompatActivity {
         //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
 
         //Passando os dados para consulta
-        Call<ImageInfo> call = restService.uploadImagem(body,id);
+        Call<Foto> call = restService.uploadImagem(body,id);
 
         Gson gson = new Gson();
         String json = gson.toJson(body);
@@ -216,12 +214,12 @@ public class CadastroClienteFoto extends AppCompatActivity {
         Log.i("Json",json);
         Log.i("GEt Name",file.getName());
         Log.i("requestBody",requestBody.toString());
-        call.enqueue(new Callback<ImageInfo>() {
+        call.enqueue(new Callback<Foto>() {
             @Override
-            public void onResponse(Call<ImageInfo> call, Response<ImageInfo> response) {
+            public void onResponse(Call<Foto> call, Response<Foto> response) {
                 if(response.isSuccessful()){
-                   ImageInfo imageInfo = response.body();
-                    Log.i("Sucesso",imageInfo.getNome());
+                   Foto foto = response.body();
+                    Log.i("Sucesso", foto.getNome());
                 }else {
                     //Toast.makeText(DadosBancarioCliente.this, "Erro"+response.message(), Toast.LENGTH_SHORT).show();
                     Log.i("Erro 1",response.message());
@@ -229,7 +227,7 @@ public class CadastroClienteFoto extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ImageInfo> call, Throwable t) {
+            public void onFailure(Call<Foto> call, Throwable t) {
                 //Toast.makeText(DadosBancarioCliente.this, "Erro 2"+ t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("Erro 2",t.getMessage());
             }
