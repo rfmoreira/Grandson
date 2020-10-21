@@ -327,22 +327,22 @@ public class PerfilClienteFragment extends Fragment {
     // Metodo para Preencher ListView
     private ArrayList<Comentario> preencherList() {
         ArrayList<Comentario> list = new ArrayList<Comentario>();
-        Comentario c = new Comentario(1,"Lucas Francelino","Ótima pessoa, gosteis muito da comanhia",0);
+        Comentario c = new Comentario(1,"Lucas Francelino","Ótima pessoa, gosteis muito da comanhia","0");
         list.add(c);
         c = new Comentario(2
                 ,"Rafael Moreira"
                 ,"Ótima pessoa, gosteis muito da comanhia"
-                ,0);
+                ,"0");
         list.add(c);
         c = new Comentario(3
                 ,"Luan Amor"
                 ,"Ótimo profissional muito atencioso e dedicado, confiavel e tem um otimo papo pena que não é muito bom e jogos peder todos, kkkk"
-                ,0);
+                ,"0");
         list.add(c);
         c = new Comentario(4
                 ,"Ferdinando Garcia"
                 ,"Ótima pessoa, gosteis muito da comanhia"
-                ,0);
+                ,"0");
         return list;
     }
 

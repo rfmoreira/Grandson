@@ -22,6 +22,90 @@ public  class MetodosCadastro {
         }
     }
 
+    // METODO VALIDACAO CARTAO DE CREDITO
+    public static boolean isCredCard(String cartao){
+
+        String numCartao = cartao;
+
+        String numString;
+
+        int soma = 0;
+
+    //Cartão com seqüências de caracteres menor ou igual a 15 dígitos
+
+        if (numCartao.length() <= 15)
+
+        {
+            for(int i = 0; i <= numCartao.length(); i++)
+
+            {
+                numString = (numCartao.substring(i,i+1));
+
+                if (i % 2 == 0)
+
+                {
+                    soma += (Integer.parseInt(numString) * 1);
+                }
+                else
+                {
+                    if ((Integer.parseInt(numString) * 2) > 9)
+                    {
+                        soma += ((Integer.parseInt(numString) * 2) - 9);
+                    }
+                    else
+                    {
+                        soma += ((Integer.parseInt(numString) * 2));
+                    }
+                }
+            }
+        }
+
+        //Cartão com seqüências de caracteres maior ou igual a 16 dígitos
+
+        if (numCartao.length() >= 16)
+        {
+            for(int i = 0; i <= numCartao.length(); i++)
+
+            {
+                numString = (numCartao.substring(i,i+1));
+                if (i % 2 == 0)
+                {
+                    if ((Integer.parseInt(numString) * 2) > 9)
+
+                    {
+                        soma += ((Integer.parseInt(numString) * 2) - 9);
+
+                    }
+                    else
+                    {
+                        soma += ((Integer.parseInt(numString) * 2));
+
+                    }
+                }
+                else
+                {
+                    soma +=(Integer.parseInt(numString) * 1);
+                }
+            }
+        }
+
+        if (soma % 10 == 0)
+
+        {
+            //txtStatus.set_Text("Cartão valido!");
+            return true;
+        }
+
+        else
+
+        {
+            //txtStatus.set_Text("Cartão invalido!");
+            return false;
+        }
+
+    }
+
+
     // METODO VALIDACAO DE CEP
     public static  boolean isCEP(String cep){
         String zipcode = cep;
