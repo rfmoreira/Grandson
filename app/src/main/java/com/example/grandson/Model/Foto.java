@@ -52,4 +52,13 @@ public class Foto {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "Foto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", type='" + type + '\'' +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }

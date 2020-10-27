@@ -66,8 +66,7 @@ public class PerfilClienteFragment extends Fragment {
     private TextInputLayout textInputNome,textInputMail,textInputTelefone
             ,textInputCep,textLogradouro
             ,textInputNumero,textInputComplemento
-            ,textInputBairro,textInputEstado,editTextCpf
-            ;
+            ,textInputBairro,textInputEstado,editTextCpf;
     private TextView txtNotaPerf,nomeCliente;
 
     private byte[] arrayBytes;
@@ -374,14 +373,17 @@ public class PerfilClienteFragment extends Fragment {
                    //textInputNome.getEditText().setTextColor(R.color.black);
                    textInputMail.getEditText().setText(cliente.getEmail());
                    textInputTelefone.getEditText().setText(cliente.getTelefone());
-                   textInputCep.getEditText().setText(String.valueOf(cliente.getCep()));
-                   textLogradouro.getEditText().setText(cliente.getEnderco());
-                   textInputNumero.getEditText().setText(String.valueOf(cliente.getNumero()));
-                   textInputComplemento.getEditText().setText(cliente.getComplemento());
+                   textInputCep.getEditText().setText(String.valueOf(cliente.getEndereco().getCep()));
+                   textLogradouro.getEditText().setText(cliente.getEndereco().getEndereco());
+                   textInputBairro.getEditText().setText(cliente.getEndereco().getCidade());
+                   textInputEstado.getEditText().setText(cliente.getEndereco().getEstado());
+                   textInputNumero.getEditText().setText(String.valueOf(cliente.getEndereco().getNumero()));
+                   textInputComplemento.getEditText().setText(cliente.getEndereco().getComplemento());
 
                    editTextCpf.getEditText().setText(cliente.getCpf());
 
-                   getFoto();
+
+                   //getFoto();
                    //editTextNomeCartao.getEditText().setText(cliente.get);
 
                }else {

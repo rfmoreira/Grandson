@@ -61,6 +61,7 @@ public class PerfilParceiro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),SolicitaServico.class);
+                intent.putExtra("idParceiro", idParceiro);
                 startActivity(intent);
             }
         });

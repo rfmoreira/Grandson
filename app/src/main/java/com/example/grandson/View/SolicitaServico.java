@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.grandson.Api.RetrofitClientCEP;
 import com.example.grandson.Api.RetrofitClientGrandson;
+import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.FormCadastrarServico;
 import com.example.grandson.Model.Cep;
 import com.example.grandson.Model.ServicosAgendados;
@@ -47,6 +49,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -86,6 +89,7 @@ public class SolicitaServico extends FragmentActivity {
 
     private FormCadastrarServico formCadastrarServico;
 
+    private int idParceiro;
     private String auth;
 
 
@@ -96,6 +100,7 @@ public class SolicitaServico extends FragmentActivity {
 
         SharedPreferences pref = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         auth = pref.getString("token","");
+        idParceiro = getIntent().getExtras().getInt("idParceiro",1);
 
         textInputData = (TextInputLayout) findViewById(R.id.textInputData);
         textInputTime = (TextInputLayout) findViewById(R.id.textInputTime);
@@ -110,7 +115,7 @@ public class SolicitaServico extends FragmentActivity {
         spinnerHoras = (Spinner) findViewById(R.id.spinnerHoras);
         btSolicitar = (Button) findViewById(R.id.btSolicitar);
 
-
+        getEnd();
 
 
         List<String> horas = getHoras();
@@ -138,12 +143,7 @@ public class SolicitaServico extends FragmentActivity {
 
             }
         });
-        //supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
-                //.findFragmentById(R.id.googleMap);
-        //client = LocationServices.getFusedLocationProviderClient(this);
-        //locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-       // getCurrentLocation();
 
         //Verficacao do foco do campo CEP para fazer consulta
         textInputCep.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -178,6 +178,7 @@ public class SolicitaServico extends FragmentActivity {
         textInputValor.getEditText().setText("R$ 25,00");
         textInputValor.getEditText().setTextColor(ContextCompat.getColor(this, R.color.black));
 
+        // EXIBIR CALENDARIO E PEGAR DATA
         textInputData.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +201,7 @@ public class SolicitaServico extends FragmentActivity {
             }
         });
 
-        //textInputTime.getEditText().setInputType(InputType.TYPE_NULL);
+        // EXIBIR RELATOGIO E PEGAR HORA DO SERVICO
         textInputTime.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,16 +336,18 @@ public class SolicitaServico extends FragmentActivity {
                     cep = response.body();
                     if (!cep.getErro()){
 
-                        textLogradouro.getEditText().setText(cep.getLogradouro());
-                        textInputComplemento.getEditText().setText(cep.getComplemento());
-                        textInputBairro.getEditText().setText(cep.getBairro());
-                        textInputEstado.getEditText().setText(cep.getLocalidade()+ " - "+cep.getUf());
+                            textLogradouro.getEditText().setText(cep.getLogradouro());
+                            textInputComplemento.getEditText().setText(cep.getComplemento());
+                            textInputBairro.getEditText().setText(cep.getBairro());
+                            textInputEstado.getEditText().setText(cep.getLocalidade()+ " - "+cep.getUf());
+                        if(textLogradouro.getEditText().getText().toString().isEmpty()){
+                        }else {
 
+                        }
 
                         Toast.makeText(getApplicationContext(), "CEP consultado com sucesso" , Toast.LENGTH_LONG).show();
                     }else{
                         textInputCep.getEditText().setError("CEP Invalido");
-                        textInputCep.requestFocus();
                     }
                 }
             }
@@ -393,10 +396,20 @@ public class SolicitaServico extends FragmentActivity {
     private void formatSolicitacao(){
 
         String dateTime = formatDateTime();
-        int idCliente = 1;
-        int idParceiro = 1;
+        //int idCliente = 1;
+        //int idParceiro = 1;
+        int cep = Integer.parseInt(MetodosCadastro.unMask(textInputCep.getEditText().getText().toString()));
+        String bairro = textInputBairro.getEditText().getText().toString();
+        String complemento = textInputComplemento.getEditText().getText().toString();
+        String logradouro =textLogradouro.getEditText().getText().toString();
+        String estado = textInputEstado.getEditText().getText().toString();
 
-        formCadastrarServico = new FormCadastrarServico(dateTime,idCliente,idParceiro,qtdHoras,valor);
+
+        int numero = Integer.parseInt(MetodosCadastro.unMask(textInputNumero.getEditText().getText().toString()));
+        int quantidadeDeHoras = 1;
+
+
+        formCadastrarServico = new FormCadastrarServico(cep,bairro,complemento,logradouro,estado,dateTime,idParceiro,numero,quantidadeDeHoras,valor);
         solicitarServico(formCadastrarServico);
     }
 
@@ -408,13 +421,18 @@ public class SolicitaServico extends FragmentActivity {
         //passando os dados para consulta
         Call<ServicosAgendados> call = restService.cadastrarServico("Bearer " + auth, formCadastrarServico);
 
+        Gson gson = new Gson();
+        String json = gson.toJson(formCadastrarServico);
+        Log.i("Json", json);
+
         call.enqueue(new Callback<ServicosAgendados>() {
             @Override
             public void onResponse(Call<ServicosAgendados> call, Response<ServicosAgendados> response) {
 
                 if(response.isSuccessful()){
+                    ServicosAgendados servicosAgendados = response.body();
+                    Log.i("Cadastro","Sucesso\n" + servicosAgendados.toString() );
 
-                    Log.i("Cadastro","Sucesso");
 
                 }else {
                     Log.i("Cadastro","Erro");
@@ -424,11 +442,46 @@ public class SolicitaServico extends FragmentActivity {
 
             @Override
             public void onFailure(Call<ServicosAgendados> call, Throwable t) {
-                Log.i("Cadastro","Falha");
+                Log.i("Cadastro","Falha" + t.getMessage());
             }
         });
     }
 
+    private void getEnd(){
+        Log.i("Auth ",auth);
+        //Instanciando a interface
+        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+        //Passando os dados para consulta
+        Call<Cliente> call = restService.getPerfilCliente("Bearer "+auth);
+        call.enqueue(new Callback<Cliente>() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onResponse(Call<Cliente> call, Response<Cliente> response) {
 
+                if(response.isSuccessful()){
+                    Cliente cliente = response.body();
+
+                    textInputCep.getEditText().setText(String.valueOf(cliente.getEndereco().getCep()));
+                    textLogradouro.getEditText().setText(cliente.getEndereco().getEndereco());
+                    textInputBairro.getEditText().setText(cliente.getEndereco().getCidade());
+                    textInputNumero.getEditText().setText(String.valueOf(cliente.getEndereco().getNumero()));
+                    textInputComplemento.getEditText().setText(cliente.getEndereco().getComplemento());
+
+
+                }else {
+                    Log.i("Erro Requisição ",response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Cliente> call, Throwable t) {
+
+                Log.i("Erro Servidor",t.getMessage());
+
+            }
+        });
+
+
+    }
 
 }

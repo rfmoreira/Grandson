@@ -3,7 +3,7 @@ package com.example.grandson.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class FormCadastrarServico {
+public class Endereco {
 
     @SerializedName("cep")
     @Expose
@@ -20,34 +20,17 @@ public class FormCadastrarServico {
     @SerializedName("estado")
     @Expose
     private String estado;
-    @SerializedName("horario")
-    @Expose
-    private String horario;
-    @SerializedName("idParceiro")
-    @Expose
-    private int idParceiro;
     @SerializedName("numero")
     @Expose
     private int numero;
-    @SerializedName("quantidadeDeHoras")
-    @Expose
-    private int quantidadeDeHoras;
-    @SerializedName("valor")
-    @Expose
-    private double valor;
 
-
-    public FormCadastrarServico(int cep, String cidade, String complemento, String endereco, String estado, String horario, int idParceiro, int numero, int quantidadeDeHoras, double valor) {
+    public Endereco(int cep, String cidade, String complemento, String endereco, String estado, int numero) {
         this.cep = cep;
         this.cidade = cidade;
         this.complemento = complemento;
         this.endereco = endereco;
         this.estado = estado;
-        this.horario = horario;
-        this.idParceiro = idParceiro;
         this.numero = numero;
-        this.quantidadeDeHoras = quantidadeDeHoras;
-        this.valor = valor;
     }
 
     public int getCep() {
@@ -90,22 +73,6 @@ public class FormCadastrarServico {
         this.estado = estado;
     }
 
-    public String getHorario() {
-        return horario;
-    }
-
-    public void setHorario(String horario) {
-        this.horario = horario;
-    }
-
-    public int getIdParceiro() {
-        return idParceiro;
-    }
-
-    public void setIdParceiro(int idParceiro) {
-        this.idParceiro = idParceiro;
-    }
-
     public int getNumero() {
         return numero;
     }
@@ -114,20 +81,15 @@ public class FormCadastrarServico {
         this.numero = numero;
     }
 
-    public int getQuantidadeDeHoras() {
-        return quantidadeDeHoras;
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "cep=" + cep +
+                ", cidade='" + cidade + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", estado='" + estado + '\'' +
+                ", numero=" + numero +
+                '}';
     }
-
-    public void setQuantidadeDeHoras(int quantidadeDeHoras) {
-        this.quantidadeDeHoras = quantidadeDeHoras;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
-
 }

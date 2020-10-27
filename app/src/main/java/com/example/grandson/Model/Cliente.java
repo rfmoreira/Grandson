@@ -1,65 +1,85 @@
 package com.example.grandson.Model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
 public class Cliente {
 
-    @SerializedName("id")
-    private int id;
-    @SerializedName("nome")
-    private String nome;
-    @SerializedName("telefone")
-    private String telefone;
     @SerializedName("cpf")
-    private  String cpf;
-    @SerializedName("nota")
-    private String nota;
-    @SerializedName("endereco")
-    private String enderco;
-    @SerializedName("cep")
-    private int cep;
-    @SerializedName("numero")
-    private int numero;
-    @SerializedName("complemento")
-    private String complemento;
-    @SerializedName("email")
-    private String email;
+    @Expose
+    private String cpf;
     @SerializedName("dataInicio")
+    @Expose
     private String dataInicio;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("endereco")
+    @Expose
+    private Endereco endereco;
+    @SerializedName("foto")
+    @Expose
+    private Foto foto;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("nome")
+    @Expose
+    private String nome;
+    @SerializedName("nota")
+    @Expose
+    private String nota;
+    @SerializedName("telefone")
+    @Expose
+    private String telefone;
 
-    public Cliente() {
+    public String getCpf() {
+        return cpf;
     }
 
-    public Cliente(int id, String nome,String telefone, String cpf, String nota, String enderco
-            , int cep, int numero, String complemento, String email, String dataInicio) {
-        this.id = id;
-        this.nome = nome;
-        this.telefone = telefone;
+    public void setCpf(String cpf) {
         this.cpf = cpf;
-        this.nota = nota;
-        this.enderco = enderco;
-        this.cep = cep;
-        this.numero = numero;
-        this.complemento = complemento;
-        this.email = email;
+    }
+
+    public String getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(String dataInicio) {
         this.dataInicio = dataInicio;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getId() {
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public Foto getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Foto foto) {
+        this.foto = foto;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,14 +91,6 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public String getNota() {
         return nota;
     }
@@ -87,68 +99,26 @@ public class Cliente {
         this.nota = nota;
     }
 
-    public String getEnderco() {
-        return enderco;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setEnderco(String enderco) {
-        this.enderco = enderco;
-    }
-
-    public int getCep() {
-        return cep;
-    }
-
-    public void setCep(int cep) {
-        this.cep = cep;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(String dataInicio) {
-        this.dataInicio = dataInicio;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     @Override
     public String toString() {
         return "Cliente{" +
-                "id=" + id +
-                ", nome='" + nome + '\n' +
-                ", telefone='" + telefone + '\n' +
-                ", cpf='" + cpf + '\n' +
-                ", nota=" + nota +
-                ", enderco='" + enderco + '\n' +
-                ", cep='" + cep + '\n' +
-                ", numero=" + numero +
-                ", complemento='" + complemento + '\n' +
-                ", email='" + email + '\n' +
-                ", dataInicio='" + dataInicio + '\n' +
+                "cpf='" + cpf + '\'' +
+                ", dataInicio='" + dataInicio + '\'' +
+                ", email='" + email + '\'' +
+                ", endereco=" + endereco.toString() +
+                ", foto=" + foto.toString() +
+                ", id=" + id +
+                ", nome='" + nome + '\'' +
+                ", nota='" + nota + '\'' +
+                ", telefone='" + telefone + '\'' +
                 '}';
     }
 }

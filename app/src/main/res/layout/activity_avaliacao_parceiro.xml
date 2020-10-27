@@ -54,6 +54,10 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,6 +72,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginBottom="50dp"
+            android:layout_marginTop="30dp"
             android:text="Deixe sua avaliação para nosso parceiro"
             android:textSize="24dp" />
 
@@ -77,19 +82,38 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:numStars="5"
-            android:stepSize="0.5"
+            android:stepSize="1"
             android:rating="5"/>
 
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="130dp"
-            android:hint="Comentários..."
-            android:textSize="18dp"
-            android:textColor="@color/black"
-            android:inputType="textMultiLine"
-            />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextComentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Comentário"
+            app:placeholderText="Comentários..."
+            app:placeholderTextColor="?attr/colorControlNormal"
+            app:hintTextAppearance="@style/HintText"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="300dp"
+                android:layout_height="130dp"
+                android:maxLength="100"
+                android:layout_gravity="center"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:textSize="20dp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
+            android:id="@+id/bt_avaliar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:background="@drawable/button_white_login"
@@ -99,12 +123,13 @@
             android:textColor="@color/Azul_Grandson"
             android:textStyle="bold"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="bottom|center_horizontal"
             />
 
     </LinearLayout>
 
-
+    </ScrollView>
 
 
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.example.grandson.Services;
 
+import com.example.grandson.Model.ModelDetalharServico;
+import com.example.grandson.Model.FormAvaliacao;
 import com.example.grandson.Model.FormEditarSenha;
 import com.example.grandson.Model.Auth;
 import com.example.grandson.Model.FormCadastrarServico;
@@ -13,10 +15,12 @@ import com.example.grandson.Model.FormLogin;
 import com.example.grandson.Model.Parceiro;
 import com.example.grandson.Model.Resposta;
 import com.example.grandson.Model.ServicosAgendados;
+import com.example.grandson.Model.ServicosConcluidos;
 
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -50,7 +54,11 @@ public interface RetrofitServiceGrandson {
    @GET("cliente/servico/agendados")
    Call<List<ServicosAgendados>> getServicosAgendados(@Header("Authorization") String auth);
 
+    @GET("cliente/servico/concluidos")
+    Call<List<ServicosConcluidos>> getServicosConcluidos(@Header("Authorization") String auth);
 
+    @GET("cliente/servico/detalhar/{id}")
+    Call<ModelDetalharServico> getServico(@Header("Authorization") String auth, @Path("id") int id);
 
     //************* METODOS POSTs ******************//
 
@@ -69,6 +77,7 @@ public interface RetrofitServiceGrandson {
     Call<Foto> uploadImagem(@Part MultipartBody.Part file, @Path("id") int id);
 
 
+
     //************* METODOS PUTs ******************//
 
 
@@ -81,4 +90,8 @@ public interface RetrofitServiceGrandson {
     @Multipart
     @PUT("foto/cliente/{id}")
     Call<Foto> alterarFotoCliente(@Header("Authorization") String auth, @Part MultipartBody.Part file);
+
+    @PUT("cliente/servico/avaliar/{id}")
+    Call<ResponseBody> avaliarParceiro(@Header("Authorization") String auth, @Path("id") int id ,@Body FormAvaliacao formAvaliacao);
+
 }

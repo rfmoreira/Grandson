@@ -1,6 +1,7 @@
 package com.example.grandson.View;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -58,9 +59,10 @@ public class ServicosAgendadosFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Toast.makeText(view.getContext(), "Posição: "+ lServicosAgendados.get(position).getNome(), Toast.LENGTH_SHORT).show();
-                /*Intent intent = new Intent(view.getContext(),SolicitaServico.class);
-                startActivity(intent);*/
+                Toast.makeText(view.getContext(), "Posição: "+ lServicosAgendados.get(position).getIdServico(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(view.getContext(),DetalharServico.class);
+                intent.putExtra("idServico", lServicosAgendados.get(position).getIdServico());
+                startActivity(intent);
             }
         });
     }

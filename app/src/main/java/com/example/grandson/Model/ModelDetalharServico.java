@@ -3,8 +3,7 @@ package com.example.grandson.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServicosAgendados {
-
+public class ModelDetalharServico {
     @SerializedName("dia")
     @Expose
     private String dia;
@@ -19,10 +18,10 @@ public class ServicosAgendados {
     private String horario;
     @SerializedName("idParceiro")
     @Expose
-    private int idParceiro;
+    private Integer idParceiro;
     @SerializedName("idServico")
     @Expose
-    private int idServico;
+    private Integer idServico;
     @SerializedName("nome")
     @Expose
     private String nome;
@@ -31,27 +30,13 @@ public class ServicosAgendados {
     private String nota;
     @SerializedName("quantidadeHoras")
     @Expose
-    private int quantidadeHoras;
+    private Integer quantidadeHoras;
     @SerializedName("telefone")
     @Expose
     private String telefone;
     @SerializedName("valor")
     @Expose
     private double valor;
-
-    public ServicosAgendados(String dia, Endereco endereco, String foto, String horario, int idParceiro, int idServico, String nome, String nota, int quantidadeHoras, String telefone, double valor) {
-        this.dia = dia;
-        this.endereco = endereco;
-        this.foto = foto;
-        this.horario = horario;
-        this.idParceiro = idParceiro;
-        this.idServico = idServico;
-        this.nome = nome;
-        this.nota = nota;
-        this.quantidadeHoras = quantidadeHoras;
-        this.telefone = telefone;
-        this.valor = valor;
-    }
 
     public String getDia() {
         return dia;
@@ -85,19 +70,19 @@ public class ServicosAgendados {
         this.horario = horario;
     }
 
-    public int getIdParceiro() {
+    public Integer getIdParceiro() {
         return idParceiro;
     }
 
-    public void setIdParceiro(int idParceiro) {
+    public void setIdParceiro(Integer idParceiro) {
         this.idParceiro = idParceiro;
     }
 
-    public int getIdServico() {
+    public Integer getIdServico() {
         return idServico;
     }
 
-    public void setIdServico(int idServico) {
+    public void setIdServico(Integer idServico) {
         this.idServico = idServico;
     }
 
@@ -117,11 +102,11 @@ public class ServicosAgendados {
         this.nota = nota;
     }
 
-    public int getQuantidadeHoras() {
+    public Integer getQuantidadeHoras() {
         return quantidadeHoras;
     }
 
-    public void setQuantidadeHoras(int quantidadeHoras) {
+    public void setQuantidadeHoras(Integer quantidadeHoras) {
         this.quantidadeHoras = quantidadeHoras;
     }
 
@@ -139,22 +124,5 @@ public class ServicosAgendados {
 
     public void setValor(double valor) {
         this.valor = valor;
-    }
-
-    @Override
-    public String toString() {
-        return "ServicosAgendados{" +
-                "dia='" + dia + '\'' +
-                ", endereco=" + endereco.toString() +
-                ", foto='" + foto + '\'' +
-                ", horario='" + horario + '\'' +
-                ", idParceiro=" + idParceiro +
-                ", idServico=" + idServico +
-                ", nome='" + nome + '\'' +
-                ", nota='" + nota + '\'' +
-                ", quantidadeHoras=" + quantidadeHoras +
-                ", telefone='" + telefone + '\'' +
-                ", valor=" + valor +
-                '}';
     }
 }
