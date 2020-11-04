@@ -45,7 +45,7 @@ public interface RetrofitServiceGrandson {
     @GET("cliente/perfil/carteira")
     Call<CartaoCredito> getCarteira(@Header("Authorization") String auth);
 
-    @GET("foto/cliente/{id}")
+    @GET("foto/cliente")
     Call<Foto> getFoto(@Header("Authorization") String auth);
 
     @GET("cliente/perfil")
@@ -64,13 +64,13 @@ public interface RetrofitServiceGrandson {
 
 
     @POST("cliente/cadastrar/")
-    Call<Cliente> cadastrarCliente(@Body FormCadastroCliente cliente);
+    Call<Resposta> cadastrarCliente(@Body FormCadastroCliente cliente);
 
     @POST("auth/cliente")
     Call<Auth> loginCliente(@Body FormLogin formLogin);
 
     @POST("cliente/servico/cadastrar")
-    Call<ServicosAgendados> cadastrarServico(@Header("Authorization") String auth, @Body FormCadastrarServico formCadastrarServico);
+    Call<Resposta> cadastrarServico(@Header("Authorization") String auth, @Body FormCadastrarServico formCadastrarServico);
 
     @Multipart
     @POST("foto/cliente/{id}")
@@ -88,10 +88,13 @@ public interface RetrofitServiceGrandson {
     Call<CartaoCredito> alterarCartao(@Header("Authorization") String auth, @Body FormEditarCartao formEditarCartao);
 
     @Multipart
-    @PUT("foto/cliente/{id}")
+    @PUT("foto/cliente")
     Call<Foto> alterarFotoCliente(@Header("Authorization") String auth, @Part MultipartBody.Part file);
 
     @PUT("cliente/servico/avaliar/{id}")
     Call<ResponseBody> avaliarParceiro(@Header("Authorization") String auth, @Path("id") int id ,@Body FormAvaliacao formAvaliacao);
+
+    @PUT("cliente/servico/cancelar/{id}")
+    Call<Resposta> cancelarServico(@Header("Authorization") String auth, @Path("id") int id);
 
 }

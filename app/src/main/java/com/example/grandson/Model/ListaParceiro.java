@@ -10,6 +10,8 @@ public class ListaParceiro {
     private String nome;
     @SerializedName("nota")
     private String nota;
+    @SerializedName("foto")
+    private Foto foto;
 
 
 
@@ -35,5 +37,13 @@ public class ListaParceiro {
 
     public void setNota(String nota) {
         this.nota = nota;
+    }
+
+    public Foto getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Foto foto) {
+        this.foto = foto;
     }
 }

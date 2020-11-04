@@ -16,52 +16,58 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
-        android:src="@drawable/ft_perfil" />
+        android:src="@drawable/ic_baseline_person_75" />
 
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginLeft="3dp"
-        >
-        <TextView
-            android:id="@+id/NomeParceiro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Parceiro"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:textSize="25sp"
-            />
-
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="end">
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginLeft="3dp"
+            >
+            <TextView
+                android:id="@+id/NomeParceiro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="Parceiro"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textSize="25sp"
+                />
 
-        <TextView
-            android:id="@+id/txtAvaliacao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="5.0"
-            android:layout_marginRight="8dp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:textSize="23sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.8"
+            android:orientation="horizontal"
+            android:gravity="end">
 
-        <ImageView
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_star" />
+            <TextView
+                android:id="@+id/txtAvaliacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="3dp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_star" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

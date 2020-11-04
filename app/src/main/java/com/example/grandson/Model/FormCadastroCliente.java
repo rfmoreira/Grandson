@@ -26,8 +26,13 @@ public class FormCadastroCliente implements Parcelable {
     private String endereco;
     @SerializedName("numero")
     private int numero;
+    @SerializedName("cidade")
+    private String cidade;
+    @SerializedName("estado")
+    private String estado;
     @SerializedName("complemento")
     private String complemento;
+
 
     //Terceira Tela cadastro
     @SerializedName("cpf")
@@ -59,6 +64,8 @@ public class FormCadastroCliente implements Parcelable {
         cep = in.readInt();
         endereco = in.readString();
         numero = in.readInt();
+        cidade = in.readString();
+        estado = in.readString();
         complemento = in.readString();
         cpf = in.readString();
         nomeCartao = in.readString();
@@ -134,6 +141,22 @@ public class FormCadastroCliente implements Parcelable {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getComplemento() {
@@ -223,6 +246,8 @@ public class FormCadastroCliente implements Parcelable {
         parcel.writeInt(cep);
         parcel.writeString(endereco);
         parcel.writeInt(numero);
+        parcel.writeString(cidade);
+        parcel.writeString(estado);
         parcel.writeString(complemento);
         parcel.writeString(cpf);
         parcel.writeString(nomeCartao);

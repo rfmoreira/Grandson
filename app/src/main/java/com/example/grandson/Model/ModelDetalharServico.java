@@ -12,7 +12,7 @@ public class ModelDetalharServico {
     private Endereco endereco;
     @SerializedName("foto")
     @Expose
-    private String foto;
+    private Foto foto;
     @SerializedName("horario")
     @Expose
     private String horario;
@@ -54,11 +54,11 @@ public class ModelDetalharServico {
         this.endereco = endereco;
     }
 
-    public String getFoto() {
+    public Foto getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Foto foto) {
         this.foto = foto;
     }
 

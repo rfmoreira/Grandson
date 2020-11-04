@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,8 +14,10 @@ import android.widget.Toast;
 import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.ModelDetalharServico;
 import com.example.grandson.Model.Parceiro;
+import com.example.grandson.Model.Resposta;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
+import com.example.grandson.Utils.MetodosCadastro;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -61,6 +64,13 @@ public class DetalharServico extends AppCompatActivity {
 
         getServico();
 
+        bt_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelarServico();
+            }
+        });
+
     }
 
 
@@ -80,11 +90,16 @@ public class DetalharServico extends AppCompatActivity {
 
                     nomeParceiro.setText(detalharServico.getNome());
                     txtNotaParceiro.setText(detalharServico.getNota());
-                    txtDataServico.setText(detalharServico.getDia());
-                    txtHoraServico.setText(detalharServico.getHorario());
-                    txtValorServico.setText(String.valueOf(detalharServico.getValor()));
-                    txtQtdHorasServico.setText(String.valueOf(detalharServico.getQuantidadeHoras()));
-                    txtCepServico.setText(String.valueOf(detalharServico.getEndereco().getCep()));
+                    String[] data = detalharServico.getDia().split("-");
+                    txtDataServico.setText(data[2]+"/"+data[1]+"/"+data[0]);
+                    String hora = detalharServico.getHorario();
+                    int i = hora.length();
+                    txtHoraServico.setText(hora.substring(0,i-3));
+                    String valor = String.valueOf(detalharServico.getValor());
+                    txtValorServico.setText("R$ "+valor.replace(".",",")+"0");
+                    txtQtdHorasServico.setText(String.valueOf(detalharServico.getQuantidadeHoras())+":00");
+                    String cep = MetodosCadastro.addMask(String.valueOf(detalharServico.getEndereco().getCep()),"##.###-###");
+                    txtCepServico.setText(cep);
                     txtEnderecoServico.setText(detalharServico.getEndereco().getEndereco());
                     txtNumeroEnd.setText(String.valueOf(detalharServico.getEndereco().getNumero()));
                     txtComplemento.setText(detalharServico.getEndereco().getComplemento());
@@ -102,6 +117,31 @@ public class DetalharServico extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void cancelarServico(){
+
+        //Instanciando a interface
+        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+        //Passando os dados para consulta
+        Call<Resposta> call = restService.cancelarServico("Bearer "+auth,idServico);
+
+        call.enqueue(new Callback<Resposta>() {
+            @Override
+            public void onResponse(Call<Resposta> call, Response<Resposta> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(DetalharServico.this, response.body().getMensagem(), Toast.LENGTH_SHORT).show();
+                    finish();
+                }else {
+                    Toast.makeText(DetalharServico.this, "Erro", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Resposta> call, Throwable t) {
+                Toast.makeText(DetalharServico.this, "Falha", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

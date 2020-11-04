@@ -86,6 +86,7 @@ public class AvaliacaoParceiro extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(AvaliacaoParceiro.this, "Sucesso", Toast.LENGTH_SHORT).show();
+                    finish();
                 }else {
                     Toast.makeText(AvaliacaoParceiro.this, "Erro", Toast.LENGTH_SHORT).show();
                 }

@@ -34,6 +34,7 @@
         app:itemBackground="@color/Azul_Grandson"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_button" />
 
 

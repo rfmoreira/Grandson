@@ -4,51 +4,41 @@ import com.google.gson.annotations.SerializedName;
 
 public class Comentario {
 
-    @SerializedName("id")
-    private int id;
-    @SerializedName("nomePessoa")
-    private String nomePessoa;
-    @SerializedName("comentario")
-    private String comentario;
     @SerializedName("foto")
-    private String ftPerfil;
+    private Foto foto;
+    @SerializedName("nome")
+    private String nome;
+    @SerializedName("texto")
+    private String texto;
 
-    public Comentario(int id, String nomePessoa, String comentario, String ftPerfil) {
-        this.id = id;
-        this.nomePessoa = nomePessoa;
-        this.comentario = comentario;
-        this.ftPerfil = ftPerfil;
+
+    public Comentario(Foto foto, String nome, String texto) {
+        this.foto = foto;
+        this.nome = nome;
+        this.texto = texto;
     }
 
-    public int getId() {
-        return id;
+    public Foto getFoto() {
+        return foto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFoto(Foto foto) {
+        this.foto = foto;
     }
 
-    public String getNomePessoa() {
-        return nomePessoa;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomePessoa(String nomePessoa) {
-        this.nomePessoa = nomePessoa;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getComentario() {
-        return comentario;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
-    public String getFtPerfil() {
-        return ftPerfil;
-    }
-
-    public void setFtPerfil(String ftPerfil) {
-        this.ftPerfil = ftPerfil;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 }

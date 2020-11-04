@@ -103,7 +103,7 @@ public class ServicoConcluidoFragment extends Fragment {
 
                     // Verificando se lista esta vazia
                     if (lServicosConcluidos.isEmpty()){
-                        AdapterListVewServicosConcluidos adapter = new AdapterListVewServicosConcluidos(getActivity(),null);
+                        AdapterListVewServicosConcluidos adapter = new AdapterListVewServicosConcluidos(getContext(),null);
                     }else {
                         // Chamando Adaptador para preenchimento do list View
                         AdapterListVewServicosConcluidos adapter = new AdapterListVewServicosConcluidos(getContext(), lServicosConcluidos);

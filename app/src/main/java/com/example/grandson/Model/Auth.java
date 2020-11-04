@@ -8,6 +8,8 @@ public class Auth {
     private String token;
     @SerializedName("header")
     private String header;
+    @SerializedName("nome")
+    private String nome;
 
 
     public String getToken() {
@@ -24,5 +26,13 @@ public class Auth {
 
     public void setHeader(String header) {
         this.header = header;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

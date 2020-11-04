@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -32,6 +33,7 @@ import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.FormCadastrarServico;
 import com.example.grandson.Model.Cep;
+import com.example.grandson.Model.Resposta;
 import com.example.grandson.Model.ServicosAgendados;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceCEP;
@@ -76,7 +78,7 @@ public class SolicitaServico extends FragmentActivity {
     private TextInputLayout textInputData,textInputTime,textInputValor
             ,textInputCep,textLogradouro
             ,textInputNumero,textInputComplemento
-            ,textInputBairro,textInputEstado;
+            ,textInputBairro,textInputEstado,textInputDescricao;
     DatePickerDialog pickerData;
     TimePickerDialog pickerTime;
     private Spinner spinnerHoras;
@@ -112,6 +114,7 @@ public class SolicitaServico extends FragmentActivity {
         textInputComplemento = (TextInputLayout) findViewById(R.id.textInputComplemento);
         textInputBairro = (TextInputLayout) findViewById(R.id.textInputBairro);
         textInputEstado = (TextInputLayout) findViewById(R.id.textInputEstado);
+        textInputDescricao = (TextInputLayout) findViewById(R.id.textInputDescricao);
         spinnerHoras = (Spinner) findViewById(R.id.spinnerHoras);
         btSolicitar = (Button) findViewById(R.id.btSolicitar);
 
@@ -240,86 +243,6 @@ public class SolicitaServico extends FragmentActivity {
     }
 
 
-
-
-    private void getCurrentLocation() {
-        Log.i("getCurrent", "Entrou");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED ) {
-            Log.i("getCurrent", "Entrou no if");
-            Task<Location> task = client.getLastLocation();
-            task.addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location loc) {
-                         location =loc;
-                    if(location != null ){
-                        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                            @Override
-                            public void onMapReady(GoogleMap googleMap) {
-                                //Log.i("getCurrent","Entrou no suport  "+location.getLatitude());
-                                LatLng latLng = new LatLng(location.getLatitude()
-                                        ,location.getLongitude());
-                                try {
-                                    address = getAddress(location.getLatitude(),location.getLongitude());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                MarkerOptions options = new MarkerOptions().position(latLng).title(address.getAddressLine(0));
-                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-                                googleMap.isMyLocationEnabled();
-                                googleMap.addMarker(options);
-                            }
-                        });
-                    }
-                }
-            });
-        }else {
-           /* if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(intent, 1);
-            }else{**/
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        44);
-                Log.i("getCurrent","Entrou no else");
-        }
-
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 44){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                getCurrentLocation();
-            }
-        }
-    }
-
-
-    public Address getAddress(double latitude, double longitude) throws IOException {
-        Geocoder geocoder = new Geocoder(getApplicationContext());
-        Address address = null;
-        List<Address> addresses;
-
-        addresses = geocoder.getFromLocation(latitude,longitude,1);
-        if (addresses.size() >0){
-                address = addresses.get(0);
-        }
-        Toast.makeText(this, "Address: " + address.getCountryName()
-                +' '+ address.getFeatureName()
-                +' '+ address.getAdminArea()
-                +' '+ address.getAddressLine(0)
-
-                , Toast.LENGTH_SHORT).show();
-        Log.i("getCurrent","Address: " + address.getCountryName()
-                +' '+ address.getFeatureName()
-                +' '+ address.getAdminArea()
-                +' '+ address.getAddressLine(0));
-        return address;
-    };
-
-
     private void consultarCEP(String sCep) {
 
         //instanciando a interface
@@ -340,10 +263,6 @@ public class SolicitaServico extends FragmentActivity {
                             textInputComplemento.getEditText().setText(cep.getComplemento());
                             textInputBairro.getEditText().setText(cep.getBairro());
                             textInputEstado.getEditText().setText(cep.getLocalidade()+ " - "+cep.getUf());
-                        if(textLogradouro.getEditText().getText().toString().isEmpty()){
-                        }else {
-
-                        }
 
                         Toast.makeText(getApplicationContext(), "CEP consultado com sucesso" , Toast.LENGTH_LONG).show();
                     }else{
@@ -372,12 +291,16 @@ public class SolicitaServico extends FragmentActivity {
      return horas;
     }
 
-
     public String formatDateTime(){
 
         if(!textInputData.getEditText().toString().isEmpty() && !textInputTime.getEditText().toString().isEmpty()){
             String[] splitDate = data.split("/");
-            String dia = splitDate[0];
+            String dia;
+            if(Integer.parseInt(splitDate[0])>=1 && Integer.parseInt(splitDate[0])<=9){
+                dia = "0"+splitDate[0];
+            }else {
+                dia = splitDate[0];
+            }
             String mes = splitDate[1];
             String ano = splitDate[2];
             String time = hora;
@@ -403,13 +326,15 @@ public class SolicitaServico extends FragmentActivity {
         String complemento = textInputComplemento.getEditText().getText().toString();
         String logradouro =textLogradouro.getEditText().getText().toString();
         String estado = textInputEstado.getEditText().getText().toString();
+        String descricao = textInputDescricao.getEditText().getText().toString();
 
 
         int numero = Integer.parseInt(MetodosCadastro.unMask(textInputNumero.getEditText().getText().toString()));
         int quantidadeDeHoras = 1;
 
 
-        formCadastrarServico = new FormCadastrarServico(cep,bairro,complemento,logradouro,estado,dateTime,idParceiro,numero,quantidadeDeHoras,valor);
+        formCadastrarServico = new FormCadastrarServico(cep,bairro,complemento,logradouro
+                ,estado,dateTime,idParceiro,numero,quantidadeDeHoras,valor,descricao);
         solicitarServico(formCadastrarServico);
     }
 
@@ -419,20 +344,26 @@ public class SolicitaServico extends FragmentActivity {
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
 
         //passando os dados para consulta
-        Call<ServicosAgendados> call = restService.cadastrarServico("Bearer " + auth, formCadastrarServico);
+        Call<Resposta> call = restService.cadastrarServico("Bearer " + auth, formCadastrarServico);
 
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         String json = gson.toJson(formCadastrarServico);
-        Log.i("Json", json);
+        Log.i("Json", json);*/
 
-        call.enqueue(new Callback<ServicosAgendados>() {
+        call.enqueue(new Callback<Resposta>() {
             @Override
-            public void onResponse(Call<ServicosAgendados> call, Response<ServicosAgendados> response) {
+            public void onResponse(Call<Resposta> call, Response<Resposta> response) {
 
                 if(response.isSuccessful()){
-                    ServicosAgendados servicosAgendados = response.body();
-                    Log.i("Cadastro","Sucesso\n" + servicosAgendados.toString() );
-
+                    Resposta resposta = response.body();
+                    //Log.i("Cadastro","Sucesso\n" + servicosAgendados.toString() );
+                    Toast.makeText(SolicitaServico.this, "Serviço Cadastrado", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SolicitaServico.this, DetalharServico.class);
+                    intent.putExtra("idServico",resposta.getObject());
+                    Log.i("ID SERVICO", String.valueOf(resposta.getObject()));
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
 
                 }else {
                     Log.i("Cadastro","Erro");
@@ -441,7 +372,7 @@ public class SolicitaServico extends FragmentActivity {
             }
 
             @Override
-            public void onFailure(Call<ServicosAgendados> call, Throwable t) {
+            public void onFailure(Call<Resposta> call, Throwable t) {
                 Log.i("Cadastro","Falha" + t.getMessage());
             }
         });
@@ -464,6 +395,7 @@ public class SolicitaServico extends FragmentActivity {
                     textInputCep.getEditText().setText(String.valueOf(cliente.getEndereco().getCep()));
                     textLogradouro.getEditText().setText(cliente.getEndereco().getEndereco());
                     textInputBairro.getEditText().setText(cliente.getEndereco().getCidade());
+                    textInputEstado.getEditText().setText(cliente.getEndereco().getEstado());
                     textInputNumero.getEditText().setText(String.valueOf(cliente.getEndereco().getNumero()));
                     textInputComplemento.getEditText().setText(cliente.getEndereco().getComplemento());
 

@@ -1,9 +1,11 @@
 package com.example.grandson.View;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -139,7 +141,14 @@ public class PerfilClienteFragment extends Fragment {
         bt_edit_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                procurarImagem();
+
+                if(getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+                    String [] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permission,1001);
+                }else{
+                    procurarImagem();
+                }
+
             }
         });
 
@@ -248,6 +257,7 @@ public class PerfilClienteFragment extends Fragment {
             imagenUri = data.getData();
 
             bt_salvar_foto.setVisibility(View.VISIBLE);
+            bt_salvar_foto.setEnabled(true);
 
             //File file = data.get
             try {
@@ -294,22 +304,23 @@ public class PerfilClienteFragment extends Fragment {
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
 
         //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
-
         //Passando os dados para consulta
         Call<Foto> call = restService.alterarFotoCliente("Bearer "+ auth,body);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(body);
+        //Gson gson = new Gson();
+        //String json = gson.toJson(body);
 
-        Log.i("Json",json);
-        Log.i("GEt Name",file.getName());
-        Log.i("type",getContext().getContentResolver().getType(imagenUri));
+        //Log.i("Json",json);
+        //Log.i("GEt Name",file.getName());
+        //Log.i("type",getContext().getContentResolver().getType(imagenUri));
 
         call.enqueue(new Callback<Foto>() {
             @Override
             public void onResponse(Call<Foto> call, Response<Foto> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(getContext(), "Foto Alterada com sucesso", Toast.LENGTH_SHORT).show();
+                    bt_salvar_foto.setVisibility(View.INVISIBLE);
+                    bt_salvar_foto.setEnabled(false);
                 }else {
                     Toast.makeText(getContext(), "Erro" + response.code(), Toast.LENGTH_SHORT).show();
                 }
@@ -318,6 +329,7 @@ public class PerfilClienteFragment extends Fragment {
             @Override
             public void onFailure(Call<Foto> call, Throwable t) {
                 Toast.makeText(getContext(), "Erro Interno", Toast.LENGTH_SHORT).show();
+                Log.i("Falha",t.toString());
             }
         });
 
@@ -326,22 +338,22 @@ public class PerfilClienteFragment extends Fragment {
     // Metodo para Preencher ListView
     private ArrayList<Comentario> preencherList() {
         ArrayList<Comentario> list = new ArrayList<Comentario>();
-        Comentario c = new Comentario(1,"Lucas Francelino","Ótima pessoa, gosteis muito da comanhia","0");
+        /*Comentario c = new Comentario("","Lucas Francelino","Ótima pessoa, gosteis muito da comanhia");
         list.add(c);
-        c = new Comentario(2
+        c = new Comentario(""
                 ,"Rafael Moreira"
                 ,"Ótima pessoa, gosteis muito da comanhia"
-                ,"0");
+                );
         list.add(c);
-        c = new Comentario(3
+        c = new Comentario(""
                 ,"Luan Amor"
                 ,"Ótimo profissional muito atencioso e dedicado, confiavel e tem um otimo papo pena que não é muito bom e jogos peder todos, kkkk"
-                ,"0");
+                );
         list.add(c);
-        c = new Comentario(4
+        c = new Comentario(""
                 ,"Ferdinando Garcia"
                 ,"Ótima pessoa, gosteis muito da comanhia"
-                ,"0");
+                );*/
         return list;
     }
 
@@ -383,7 +395,7 @@ public class PerfilClienteFragment extends Fragment {
                    editTextCpf.getEditText().setText(cliente.getCpf());
 
 
-                   //getFoto();
+                   getFoto();
                    //editTextNomeCartao.getEditText().setText(cliente.get);
 
                }else {
@@ -417,11 +429,14 @@ public class PerfilClienteFragment extends Fragment {
                 if(response.isSuccessful()){
 
                     Foto foto = response.body();
-                    //Decondificando imagem recebida do JSON
-                    byte[]  stringDecodificada = Base64.decode(foto.getData(), Base64.DEFAULT);
-                    imgbtmap = BitmapFactory.decodeByteArray(stringDecodificada, 0, stringDecodificada.length);
+                    if(foto.getData() != null){
+                        //Decondificando imagem recebida do JSON
+                        byte[]  stringDecodificada = Base64.decode(foto.getData(), Base64.DEFAULT);
+                        imgbtmap = BitmapFactory.decodeByteArray(stringDecodificada, 0, stringDecodificada.length);
 
-                    imgPerf.setImageBitmap(imgbtmap);
+                        imgPerf.setImageBitmap(imgbtmap);
+                    }
+
                 }else {
                     Toast.makeText(getContext(), "Foto não cadastrada", Toast.LENGTH_SHORT).show();
                     Log.i("Erro:  ",response.message());

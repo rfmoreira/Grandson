@@ -5,99 +5,43 @@ import com.google.gson.annotations.SerializedName;
 
 public class ServicosAgendados {
 
-    @SerializedName("dia")
-    @Expose
-    private String dia;
-    @SerializedName("endereco")
-    @Expose
-    private Endereco endereco;
     @SerializedName("foto")
     @Expose
-    private String foto;
-    @SerializedName("horario")
+    private Foto foto;
+    @SerializedName("idCliente")
     @Expose
-    private String horario;
-    @SerializedName("idParceiro")
-    @Expose
-    private int idParceiro;
+    private Integer idCliente;
     @SerializedName("idServico")
     @Expose
-    private int idServico;
+    private Integer idServico;
     @SerializedName("nome")
     @Expose
     private String nome;
     @SerializedName("nota")
     @Expose
     private String nota;
-    @SerializedName("quantidadeHoras")
-    @Expose
-    private int quantidadeHoras;
-    @SerializedName("telefone")
-    @Expose
-    private String telefone;
-    @SerializedName("valor")
-    @Expose
-    private double valor;
 
-    public ServicosAgendados(String dia, Endereco endereco, String foto, String horario, int idParceiro, int idServico, String nome, String nota, int quantidadeHoras, String telefone, double valor) {
-        this.dia = dia;
-        this.endereco = endereco;
-        this.foto = foto;
-        this.horario = horario;
-        this.idParceiro = idParceiro;
-        this.idServico = idServico;
-        this.nome = nome;
-        this.nota = nota;
-        this.quantidadeHoras = quantidadeHoras;
-        this.telefone = telefone;
-        this.valor = valor;
-    }
-
-    public String getDia() {
-        return dia;
-    }
-
-    public void setDia(String dia) {
-        this.dia = dia;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.endereco = endereco;
-    }
-
-    public String getFoto() {
+    public Foto getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(Foto foto) {
         this.foto = foto;
     }
 
-    public String getHorario() {
-        return horario;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setHorario(String horario) {
-        this.horario = horario;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public int getIdParceiro() {
-        return idParceiro;
-    }
-
-    public void setIdParceiro(int idParceiro) {
-        this.idParceiro = idParceiro;
-    }
-
-    public int getIdServico() {
+    public Integer getIdServico() {
         return idServico;
     }
 
-    public void setIdServico(int idServico) {
+    public void setIdServico(Integer idServico) {
         this.idServico = idServico;
     }
 
@@ -117,44 +61,4 @@ public class ServicosAgendados {
         this.nota = nota;
     }
 
-    public int getQuantidadeHoras() {
-        return quantidadeHoras;
-    }
-
-    public void setQuantidadeHoras(int quantidadeHoras) {
-        this.quantidadeHoras = quantidadeHoras;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public double getValor() {
-        return valor;
-    }
-
-    public void setValor(double valor) {
-        this.valor = valor;
-    }
-
-    @Override
-    public String toString() {
-        return "ServicosAgendados{" +
-                "dia='" + dia + '\'' +
-                ", endereco=" + endereco.toString() +
-                ", foto='" + foto + '\'' +
-                ", horario='" + horario + '\'' +
-                ", idParceiro=" + idParceiro +
-                ", idServico=" + idServico +
-                ", nome='" + nome + '\'' +
-                ", nota='" + nota + '\'' +
-                ", quantidadeHoras=" + quantidadeHoras +
-                ", telefone='" + telefone + '\'' +
-                ", valor=" + valor +
-                '}';
-    }
 }

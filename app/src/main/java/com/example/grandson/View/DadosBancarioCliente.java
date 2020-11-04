@@ -17,6 +17,7 @@ import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.FormCadastroCliente;
 import com.example.grandson.Model.Foto;
+import com.example.grandson.Model.Resposta;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.FileUtil;
@@ -27,12 +28,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +45,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
     private TextView textViewNome;
     private TextInputLayout editTextCpf, editTextNomeCartao, editTextNumCartao, editTextCodSegCartao,editTextValidade;
     private FormCadastroCliente formCadastroCliente;
-    private Cliente cliente;
+    private Resposta resposta;
     private ProgressDialog progressDialog;
     private Uri imagenUri;
     private File file;
@@ -146,20 +149,20 @@ public class DadosBancarioCliente extends AppCompatActivity {
             //Instanciando a interface
             RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
             //Passando os dados para consulta
-            Call<Cliente> call = restService.cadastrarCliente(formCadastroCliente);
+            Call<Resposta> call = restService.cadastrarCliente(formCadastroCliente);
 
-            call.enqueue(new Callback<Cliente>() {
+            call.enqueue(new Callback<Resposta>() {
                 @Override
-                public void onResponse(Call<Cliente> call, Response<Cliente> response) {
-
+                public void onResponse(Call<Resposta> call, Response<Resposta> response) {
+                    resposta = response.body();
                     if(response.isSuccessful()){
-                        cliente = response.body();
+
                         Log.i("Sucesso",imagenUri.toString());
                         //Toast.makeText(DadosBancarioCliente.this, "Salvo com Sucesso", Toast.LENGTH_SHORT).show();
                         if(imagenUri.toString().isEmpty()){
                             Log.i("Foto : ","Sem Foto");
                         }else {
-                            salvarFoto(cliente.getId());
+                           salvarFoto(resposta.getObject());
                         }
                         Intent intent = new Intent(DadosBancarioCliente.this,ApresentacaoGrandson.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -168,15 +171,22 @@ public class DadosBancarioCliente extends AppCompatActivity {
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                     }else {
-                        Toast.makeText(DadosBancarioCliente.this, "Erro Cadastro", Toast.LENGTH_SHORT).show();
-                        Log.i("Erro:  ",response.message());
+                        ResponseBody responseBody = response.errorBody();
+
+
+                        try {
+                            Toast.makeText(DadosBancarioCliente.this, responseBody.toString(), Toast.LENGTH_SHORT).show();
+                            Log.i("Erro:  ",responseBody.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         progressDialog.dismiss();
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                     }
                 }
 
                 @Override
-                public void onFailure(Call<Cliente> call, Throwable t) {
+                public void onFailure(Call<Resposta> call, Throwable t) {
                     Toast.makeText(DadosBancarioCliente.this, "Login Inválido", Toast.LENGTH_SHORT).show();
                     Log.i("Falha:  ",t.getMessage());
                     progressDialog.dismiss();
@@ -191,7 +201,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
     private void salvarFoto(int id){
         file = FileUtil.getFile(this,imagenUri);
         final RequestBody requestBody = RequestBody.create(MediaType.parse(getContentResolver().getType(imagenUri)),file);
-        final MultipartBody.Part body = MultipartBody.Part.createFormData("file",file.getName(),requestBody);
+        final MultipartBody.Part body = MultipartBody.Part.createFormData("foto",file.getName(),requestBody);
 
         //Instanciando a interface
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();

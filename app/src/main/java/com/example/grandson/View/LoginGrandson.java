@@ -45,12 +45,6 @@ public class LoginGrandson extends AppCompatActivity {
         editTextUsuario = (TextInputLayout) findViewById(R.id.editTextUsuario);
         editTextSenha = (TextInputLayout) findViewById(R.id.editTextSenha);
 
-
-
-
-
-
-
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +107,7 @@ public class LoginGrandson extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
                     SharedPreferences.Editor ed = prefs.edit();
                     ed.putString("token",auth.getToken());
+                    ed.putString("nome",auth.getNome());
                     ed.apply();
                     Intent intent = new Intent(LoginGrandson.this, HomeCliente.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

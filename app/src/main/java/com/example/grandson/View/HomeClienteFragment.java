@@ -44,6 +44,7 @@ public class HomeClienteFragment extends Fragment {
     SearchView searchParceiro;
 
     private String auth;
+    private String  nome;
 
 
 
@@ -56,7 +57,7 @@ public class HomeClienteFragment extends Fragment {
 
         SharedPreferences pref = getActivity().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         auth = pref.getString("token","");
-
+        nome = pref.getString("nome","");
         //getActivity().onBackPressed();
 
         Log.i("Auth :", auth);
@@ -68,7 +69,7 @@ public class HomeClienteFragment extends Fragment {
         nomeCabecalho = (TextView) view.findViewById(R.id.nomeCabecalho);
 
         //String nome = getActivity().getIntent().getStringExtra("nome");
-        nomeCabecalho.setText("Nome");
+        nomeCabecalho.setText(nome);
 
 
 

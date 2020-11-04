@@ -7,9 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Foto {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+
     @SerializedName("nome")
     @Expose
     private String nome;
@@ -19,14 +17,6 @@ public class Foto {
     @SerializedName("data")
     @Expose
     private String data;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;
@@ -55,7 +45,6 @@ public class Foto {
     @Override
     public String toString() {
         return "Foto{" +
-                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", type='" + type + '\'' +
                 ", data='" + data + '\'' +
