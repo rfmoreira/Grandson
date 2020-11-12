@@ -28,11 +28,13 @@ import android.widget.Toast;
 import com.example.grandson.Api.RetrofitClientGrandson;
 import com.example.grandson.Model.Cliente;
 import com.example.grandson.Model.Comentario;
+import com.example.grandson.Model.FormEditarCliente;
 import com.example.grandson.Model.Foto;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
 import com.example.grandson.Utils.AdapterListViewComentario;
 import com.example.grandson.Utils.FileUtil;
+import com.example.grandson.Utils.MetodosCadastro;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -190,6 +192,13 @@ public class PerfilClienteFragment extends Fragment {
             }
         });
 
+        bt_salvar_cadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                desabilitarCampos();
+            }
+        });
+
         bt_salvar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -223,7 +232,8 @@ public class PerfilClienteFragment extends Fragment {
         textInputNome.getEditText().setFocusableInTouchMode(true);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textInputNome.getEditText(), InputMethodManager.SHOW_IMPLICIT);
-        textInputMail.getEditText().setFocusableInTouchMode(true);
+        editTextCpf.setEnabled(false);
+        textInputMail.setEnabled(false);
         textInputTelefone.getEditText().setFocusableInTouchMode(true);
 
         //ENDEREÇO
@@ -237,6 +247,38 @@ public class PerfilClienteFragment extends Fragment {
         bt_edit_cadastro.setEnabled(false);
         bt_salvar_cadastro.setEnabled(true);
 
+    }
+
+    private void desabilitarCampos(){
+
+        String nome = textInputNome.getEditText().getText().toString();
+        String telefone = MetodosCadastro.unMask(textInputTelefone.getEditText().getText().toString());
+        int cep = Integer.parseInt(MetodosCadastro.unMask(textInputCep.getEditText().getText().toString()));
+        String logradouro = textLogradouro.getEditText().getText().toString();
+        int numero = Integer.parseInt(textInputNumero.getEditText().getText().toString());
+        String complemento = textInputComplemento.getEditText().getText().toString();
+        String bairro = textInputBairro.getEditText().getText().toString();
+        String estado = textInputEstado.getEditText().getText().toString();
+
+        FormEditarCliente formEditarCliente = new FormEditarCliente(cep,bairro,complemento,logradouro,estado,nome,numero,telefone);
+
+        salavarCadastro(formEditarCliente);
+        //DADOS PESSOAIS
+        textInputNome.getEditText().setFocusableInTouchMode(false);
+        editTextCpf.setEnabled(false);
+        textInputMail.setEnabled(false);
+        textInputTelefone.getEditText().setFocusableInTouchMode(false);
+
+        //ENDEREÇO
+        textInputCep.getEditText().setFocusableInTouchMode(false);
+        textLogradouro.getEditText().setFocusableInTouchMode(false);
+        textInputNumero.getEditText().setFocusableInTouchMode(false);
+        textInputComplemento.getEditText().setFocusableInTouchMode(false);
+        textInputBairro.getEditText().setFocusableInTouchMode(false);
+        textInputEstado.getEditText().setFocusableInTouchMode(false);
+
+        bt_edit_cadastro.setEnabled(true);
+        bt_salvar_cadastro.setEnabled(false);
     }
 
     //Editar imagem de Perfil
@@ -363,6 +405,7 @@ public class PerfilClienteFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil_cliente, container, false);
     }
+
     // Metodo para preenchimento dos dados de perfil
     private void getPerfil(){
         Log.i("Auth ",auth);
@@ -451,5 +494,28 @@ public class PerfilClienteFragment extends Fragment {
         });
 
 
+    }
+
+    private void salavarCadastro(FormEditarCliente formEditarCliente){
+        //Instanciando a interface
+        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+        //Passando os dados para consulta
+        Call<Cliente> call = restService.alterarCliente("Bearer "+auth, formEditarCliente);
+
+        call.enqueue(new Callback<Cliente>() {
+            @Override
+            public void onResponse(Call<Cliente> call, Response<Cliente> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(getContext(), "Alterado com Sucesso", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Erro ao alterar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Cliente> call, Throwable t) {
+                Toast.makeText(getContext(), "Falha no servidor", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

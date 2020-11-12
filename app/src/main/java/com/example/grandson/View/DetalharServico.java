@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -97,12 +100,22 @@ public class DetalharServico extends AppCompatActivity {
                     txtHoraServico.setText(hora.substring(0,i-3));
                     String valor = String.valueOf(detalharServico.getValor());
                     txtValorServico.setText("R$ "+valor.replace(".",",")+"0");
-                    txtQtdHorasServico.setText(String.valueOf(detalharServico.getQuantidadeHoras())+":00");
+                    String qtdHoras = String.valueOf(detalharServico.getQuantidadeHoras()).replace(".",":");
+                    txtQtdHorasServico.setText(qtdHoras+"0");
                     String cep = MetodosCadastro.addMask(String.valueOf(detalharServico.getEndereco().getCep()),"##.###-###");
                     txtCepServico.setText(cep);
                     txtEnderecoServico.setText(detalharServico.getEndereco().getEndereco());
                     txtNumeroEnd.setText(String.valueOf(detalharServico.getEndereco().getNumero()));
                     txtComplemento.setText(detalharServico.getEndereco().getComplemento());
+
+                    String foto = detalharServico.getFoto().getData();
+                    if(foto != null){
+                        //Decondificando imagem recebida do JSON
+                        byte[]  stringDecodificada = Base64.decode(foto, Base64.DEFAULT);
+                        Bitmap imgbtmap = BitmapFactory.decodeByteArray(stringDecodificada, 0, stringDecodificada.length);
+
+                        imgPerfilParceiro.setImageBitmap(imgbtmap);
+                    }
 
                     Toast.makeText(DetalharServico.this, "Sucesso", Toast.LENGTH_SHORT).show();
                 }else {

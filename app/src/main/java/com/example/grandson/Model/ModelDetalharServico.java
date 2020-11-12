@@ -30,7 +30,7 @@ public class ModelDetalharServico {
     private String nota;
     @SerializedName("quantidadeHoras")
     @Expose
-    private Integer quantidadeHoras;
+    private double quantidadeHoras;
     @SerializedName("telefone")
     @Expose
     private String telefone;
@@ -102,11 +102,11 @@ public class ModelDetalharServico {
         this.nota = nota;
     }
 
-    public Integer getQuantidadeHoras() {
+    public double getQuantidadeHoras() {
         return quantidadeHoras;
     }
 
-    public void setQuantidadeHoras(Integer quantidadeHoras) {
+    public void setQuantidadeHoras(double quantidadeHoras) {
         this.quantidadeHoras = quantidadeHoras;
     }
 

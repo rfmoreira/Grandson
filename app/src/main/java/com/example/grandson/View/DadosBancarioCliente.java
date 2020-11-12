@@ -58,13 +58,14 @@ public class DadosBancarioCliente extends AppCompatActivity {
         formCadastroCliente = getIntent().getExtras().getParcelable("cliente");
         imagenUri = Uri.parse(formCadastroCliente.getUriFoto());
 
+        textViewNome = (TextView) findViewById(R.id.textViewNome);
         editTextCpf = (TextInputLayout) findViewById(R.id.editTextCpf);
         editTextNomeCartao = (TextInputLayout) findViewById(R.id.editTextNomeCartao);
         editTextNumCartao = (TextInputLayout) findViewById(R.id.editTextNumCartao);
         editTextCodSegCartao = (TextInputLayout) findViewById(R.id.editTextCodSegCartao);
         editTextValidade = (TextInputLayout) findViewById(R.id.editTextValidade);
 
-
+        textViewNome.setText(formCadastroCliente.getNome());
         // MASCARA CPF
         SimpleMaskFormatter simpleMaskCpf = new SimpleMaskFormatter("NNN.NNN.NNN-NN");
         MaskTextWatcher maskCpf = new MaskTextWatcher(editTextCpf.getEditText(), simpleMaskCpf);
@@ -90,23 +91,23 @@ public class DadosBancarioCliente extends AppCompatActivity {
         //formCadastroCliente.setFoto(foto);
 
         if(MetodosCadastro.isCampoVazio(MetodosCadastro.unMask(editTextCpf.getEditText().getText().toString()))){
-            editTextCpf.getEditText().setError("Campo  Vazio !");
+            editTextCpf.getEditText().setError("Campo Vazio!");
         }else{
         if(MetodosCadastro.isCPF(MetodosCadastro.unMask(editTextCpf.getEditText().getText().toString()))){
             formCadastroCliente.setCpf(MetodosCadastro.unMask(editTextCpf.getEditText().getText().toString()));
 
             if(MetodosCadastro.isCampoVazio(editTextNomeCartao.getEditText().getText().toString())){
-                editTextNomeCartao.getEditText().setError("Campo  Vazio !");
+                editTextNomeCartao.getEditText().setError("Campo Vazio!");
             }else{
                 formCadastroCliente.setNomeCartao(editTextNomeCartao.getEditText().getText().toString());
 
                 if (MetodosCadastro.isCampoVazio(MetodosCadastro.unMask(editTextNumCartao.getEditText().getText().toString()))){
-                    editTextNumCartao.getEditText().setError("Campo  Vazio !");
+                    editTextNumCartao.getEditText().setError("Campo Vazio!");
                 }else {
                     formCadastroCliente.setNumeroCartao(MetodosCadastro.unMask(editTextNumCartao.getEditText().getText().toString()));
 
                    if(MetodosCadastro.isCampoVazio(editTextValidade.getEditText().getText().toString())){
-                        editTextValidade.getEditText().setError("Campo  Vazio !");
+                        editTextValidade.getEditText().setError("Campo Vazio!");
                    }else{
                         if(isDate(editTextValidade.getEditText().getText().toString())){
                             editTextValidade.getEditText().setError("Data Inválida");
@@ -117,7 +118,7 @@ public class DadosBancarioCliente extends AppCompatActivity {
                                 formCadastroCliente.setDataValidade(formatDate(editTextValidade.getEditText().getText().toString()));
 
                                 if (MetodosCadastro.isCampoVazio(editTextCodSegCartao.getEditText().getText().toString())){
-                                    editTextCodSegCartao.getEditText().setError("Campo  Vazio !");
+                                    editTextCodSegCartao.getEditText().setError("Campo Vazio!");
                                 }else {
 
                                     formCadastroCliente.setCvv(Integer.parseInt(MetodosCadastro.unMask(editTextCodSegCartao.getEditText().getText().toString())));

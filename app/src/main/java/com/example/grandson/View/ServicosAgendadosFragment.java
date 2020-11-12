@@ -103,7 +103,7 @@ public class ServicosAgendadosFragment extends Fragment {
                         if (lServicosAgendados.isEmpty()){
                             textInfo.setVisibility(View.VISIBLE);
                             listView.setVisibility(View.INVISIBLE);
-                            AdapterListVewServicosAgendados adapter = new AdapterListVewServicosAgendados(getActivity(),null);
+                            //AdapterListVewServicosAgendados adapter = new AdapterListVewServicosAgendados(getActivity(),null);
                         }else {
                             listView.setVisibility(View.VISIBLE);
                             // Chamando Adaptador para preenchimento do list View

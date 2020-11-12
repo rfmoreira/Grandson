@@ -31,7 +31,7 @@ public class FormCadastrarServico {
     private int numero;
     @SerializedName("quantidadeDeHoras")
     @Expose
-    private int quantidadeDeHoras;
+    private double quantidadeDeHoras;
     @SerializedName("valor")
     @Expose
     private double valor;
@@ -40,7 +40,7 @@ public class FormCadastrarServico {
     private String descricao;
 
 
-    public FormCadastrarServico(int cep, String cidade, String complemento, String endereco, String estado, String horario, int idParceiro, int numero, int quantidadeDeHoras, double valor, String descricao) {
+    public FormCadastrarServico(int cep, String cidade, String complemento, String endereco, String estado, String horario, int idParceiro, int numero, double quantidadeDeHoras, double valor, String descricao) {
         this.cep = cep;
         this.cidade = cidade;
         this.complemento = complemento;
@@ -118,11 +118,11 @@ public class FormCadastrarServico {
         this.numero = numero;
     }
 
-    public int getQuantidadeDeHoras() {
+    public double getQuantidadeDeHoras() {
         return quantidadeDeHoras;
     }
 
-    public void setQuantidadeDeHoras(int quantidadeDeHoras) {
+    public void setQuantidadeDeHoras(double quantidadeDeHoras) {
         this.quantidadeDeHoras = quantidadeDeHoras;
     }
 

@@ -1,5 +1,6 @@
 package com.example.grandson.Services;
 
+import com.example.grandson.Model.FormEditarCliente;
 import com.example.grandson.Model.ModelDetalharServico;
 import com.example.grandson.Model.FormAvaliacao;
 import com.example.grandson.Model.FormEditarSenha;
@@ -90,6 +91,9 @@ public interface RetrofitServiceGrandson {
     @Multipart
     @PUT("foto/cliente")
     Call<Foto> alterarFotoCliente(@Header("Authorization") String auth, @Part MultipartBody.Part file);
+
+    @PUT("cliente")
+    Call<Cliente> alterarCliente(@Header("Authorization") String auth, @Body FormEditarCliente formEditarCliente);
 
     @PUT("cliente/servico/avaliar/{id}")
     Call<ResponseBody> avaliarParceiro(@Header("Authorization") String auth, @Path("id") int id ,@Body FormAvaliacao formAvaliacao);

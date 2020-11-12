@@ -73,7 +73,7 @@ public class RetrofitClientGrandson {
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.5:8080/api/")
+                    .baseUrl("http://192.168.1.8:8080/api/")
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

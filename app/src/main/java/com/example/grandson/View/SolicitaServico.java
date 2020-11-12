@@ -330,7 +330,7 @@ public class SolicitaServico extends FragmentActivity {
 
 
         int numero = Integer.parseInt(MetodosCadastro.unMask(textInputNumero.getEditText().getText().toString()));
-        int quantidadeDeHoras = 1;
+        double quantidadeDeHoras = qtdHoras;
 
 
         formCadastrarServico = new FormCadastrarServico(cep,bairro,complemento,logradouro

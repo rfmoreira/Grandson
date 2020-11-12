@@ -71,7 +71,7 @@ public class HomeClienteFragment extends Fragment {
         //String nome = getActivity().getIntent().getStringExtra("nome");
         nomeCabecalho.setText(nome);
 
-
+        searchParceiro.setFocusable(false);
 
 
         // Metodo de onClick do list view
@@ -152,7 +152,7 @@ public class HomeClienteFragment extends Fragment {
                         Log.i("Empty", "Lista vazia");
                         textView.setVisibility(View.VISIBLE);
                         listView.setVisibility(View.INVISIBLE);
-                        AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),null);
+                        //AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),null);
                     }else {
                         paceirosFiltrados.addAll(lListaParceiro);
                         listView.setVisibility(View.VISIBLE);
