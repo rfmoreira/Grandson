@@ -128,14 +128,19 @@ public class PerfilParceiro extends AppCompatActivity {
                     Parceiro parceiro = response.body();
 
                     nomeCliente.setText(parceiro.getNome());
-                    txtNotaPerf.setText(parceiro.getNota());
+                    String v = parceiro.getNota();
+                    if (v.length() == 1){
+                        txtNotaPerf.setText(parceiro.getNota()+",0");
+                    }else {
+                        txtNotaPerf.setText(parceiro.getNota());
+                    }
                     txtViewQtdCompanhia.setText(String.valueOf(parceiro.getQuantidadeServico()));
                     String[] date1 = parceiro.getDataInicio().split("T");
                     String[] date2 = date1[0].split("-");
                     txtViewDataInicio.setText(date2[2]+"/"+date2[1]+"/"+date2[0]);
                     //Preenchendo Lista de comentarios
                     listaCometarios = new ArrayList<>(parceiro.getComentarios());
-                    if(parceiro.getFoto() == null){
+                    if(parceiro.getFoto().getData() == null){
 
                     }else {
                         byte[]  stringDecodificada = Base64.decode(parceiro.getFoto().getData(), Base64.DEFAULT);

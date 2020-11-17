@@ -106,10 +106,16 @@ public class ServicosAgendadosFragment extends Fragment {
                             //AdapterListVewServicosAgendados adapter = new AdapterListVewServicosAgendados(getActivity(),null);
                         }else {
                             listView.setVisibility(View.VISIBLE);
-                            // Chamando Adaptador para preenchimento do list View
-                            AdapterListVewServicosAgendados adapter = new AdapterListVewServicosAgendados(getContext(), lServicosAgendados);
-                            // Setenado adptador no list view
-                            listView.setAdapter(adapter);
+
+                            try{
+                                // Chamando Adaptador para preenchimento do list View
+                                AdapterListVewServicosAgendados adapter = new AdapterListVewServicosAgendados(getContext(), lServicosAgendados);
+                                // Setenado adptador no list view
+                                listView.setAdapter(adapter);
+                            }catch(Exception e) {
+                                Log.i("Erro", e.getMessage());
+                            }
+
                         }
 
                     }else {

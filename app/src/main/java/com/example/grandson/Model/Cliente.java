@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 public class Cliente {
 
@@ -34,6 +35,9 @@ public class Cliente {
     @SerializedName("telefone")
     @Expose
     private String telefone;
+    @SerializedName("comentarios")
+    @Expose
+    private List<Comentario> comentarios = null;
 
     public String getCpf() {
         return cpf;
@@ -105,6 +109,14 @@ public class Cliente {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
     }
 
     @Override

@@ -166,17 +166,16 @@ public class DadosBancarioCliente extends AppCompatActivity {
                            salvarFoto(resposta.getObject());
                         }
                         Intent intent = new Intent(DadosBancarioCliente.this,ApresentacaoGrandson.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        finishAffinity();
                         startActivity(intent);
                         progressDialog.dismiss();
                         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                     }else {
                         ResponseBody responseBody = response.errorBody();
-
-
                         try {
-                            Toast.makeText(DadosBancarioCliente.this, responseBody.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DadosBancarioCliente.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
                             Log.i("Erro:  ",responseBody.string());
                         } catch (IOException e) {
                             e.printStackTrace();

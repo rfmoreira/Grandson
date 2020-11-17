@@ -436,6 +436,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="250dp"
+                android:focusable="false"
                 android:orientation="vertical"
                 android:layout_margin="5dp">
 
@@ -458,7 +459,10 @@
                     android:dividerHeight="8dp"
                     android:divider="@android:color/transparent"
                     android:layout_marginBottom="5dp"
-                    android:nestedScrollingEnabled="true" />
+                    android:nestedScrollingEnabled="true"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    />
             </LinearLayout>
 
         </LinearLayout>

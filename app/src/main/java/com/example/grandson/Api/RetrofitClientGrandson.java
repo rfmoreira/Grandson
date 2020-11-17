@@ -73,7 +73,7 @@ public class RetrofitClientGrandson {
 
         if(retrofit == null){
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.8:8080/api/")
+                    .baseUrl("https://grandson.herokuapp.com/api/")
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

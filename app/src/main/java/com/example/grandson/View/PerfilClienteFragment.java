@@ -127,7 +127,7 @@ public class PerfilClienteFragment extends Fragment {
         editTextValidade = (TextInputLayout) view.findViewById(R.id.editTextValidade);*/
 
         //Preenchendo Lista de comentarios
-        listaCometarios = preencherList();
+        /*listaCometarios = preencherList();
 
         // Verificando se lista esta vazia
         if (listaCometarios.isEmpty()){
@@ -137,7 +137,7 @@ public class PerfilClienteFragment extends Fragment {
             AdapterListViewComentario adapter = new AdapterListViewComentario(this.getContext(),listaCometarios);
             // Setenado adptador no list view
             listViewComentarios.setAdapter(adapter);
-        }
+        }*/
 
         //Botao de editar imagem de Perfil
         bt_edit_image.setOnClickListener(new View.OnClickListener() {
@@ -339,63 +339,52 @@ public class PerfilClienteFragment extends Fragment {
 
     public void salvarFoto(){
         file = FileUtil.getFile(getContext(),imagenUri);
-        final RequestBody requestBody = RequestBody.create(MediaType.parse(getContext().getContentResolver().getType(imagenUri)),file);
-        final MultipartBody.Part body = MultipartBody.Part.createFormData("foto",file.getName(),requestBody);
+        long size = file.length();
 
-        //Instanciando a interface
-        RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
+        if(size <= 2097152){
+            final RequestBody requestBody = RequestBody.create(MediaType.parse(getContext().getContentResolver().getType(imagenUri)),file);
+            final MultipartBody.Part body = MultipartBody.Part.createFormData("foto",file.getName(),requestBody);
 
-        //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
-        //Passando os dados para consulta
-        Call<Foto> call = restService.alterarFotoCliente("Bearer "+ auth,body);
+            //Instanciando a interface
+            RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
 
-        //Gson gson = new Gson();
-        //String json = gson.toJson(body);
+            //RequestBody bodyId = RequestBody.create(MediaType.parse("path"), String.valueOf(id));
+            //Passando os dados para consulta
+            Call<Foto> call = restService.alterarFotoCliente("Bearer "+ auth,body);
 
-        //Log.i("Json",json);
-        //Log.i("GEt Name",file.getName());
-        //Log.i("type",getContext().getContentResolver().getType(imagenUri));
+            //Gson gson = new Gson();
+            //String json = gson.toJson(body);
 
-        call.enqueue(new Callback<Foto>() {
-            @Override
-            public void onResponse(Call<Foto> call, Response<Foto> response) {
-                if(response.isSuccessful()){
-                    Toast.makeText(getContext(), "Foto Alterada com sucesso", Toast.LENGTH_SHORT).show();
-                    bt_salvar_foto.setVisibility(View.INVISIBLE);
-                    bt_salvar_foto.setEnabled(false);
-                }else {
-                    Toast.makeText(getContext(), "Erro" + response.code(), Toast.LENGTH_SHORT).show();
+            //Log.i("Json",json);
+            //Log.i("GEt Name",file.getName());
+            //Log.i("type",getContext().getContentResolver().getType(imagenUri));
+
+            call.enqueue(new Callback<Foto>() {
+                @Override
+                public void onResponse(Call<Foto> call, Response<Foto> response) {
+                    if(response.isSuccessful()){
+                        Toast.makeText(getContext(), "Foto Alterada com sucesso", Toast.LENGTH_SHORT).show();
+                        bt_salvar_foto.setVisibility(View.INVISIBLE);
+                        bt_salvar_foto.setEnabled(false);
+                    }else {
+                        Toast.makeText(getContext(), "Erro" + response.code(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<Foto> call, Throwable t) {
-                Toast.makeText(getContext(), "Erro Interno", Toast.LENGTH_SHORT).show();
-                Log.i("Falha",t.toString());
-            }
-        });
-
+                @Override
+                public void onFailure(Call<Foto> call, Throwable t) {
+                    Toast.makeText(getContext(), "Erro Interno", Toast.LENGTH_SHORT).show();
+                    Log.i("Falha",t.toString());
+                }
+            });
+        }else {
+            Toast.makeText(getContext(), "Imagem Muito Grande !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Metodo para Preencher ListView
     private ArrayList<Comentario> preencherList() {
         ArrayList<Comentario> list = new ArrayList<Comentario>();
-        /*Comentario c = new Comentario("","Lucas Francelino","Ótima pessoa, gosteis muito da comanhia");
-        list.add(c);
-        c = new Comentario(""
-                ,"Rafael Moreira"
-                ,"Ótima pessoa, gosteis muito da comanhia"
-                );
-        list.add(c);
-        c = new Comentario(""
-                ,"Luan Amor"
-                ,"Ótimo profissional muito atencioso e dedicado, confiavel e tem um otimo papo pena que não é muito bom e jogos peder todos, kkkk"
-                );
-        list.add(c);
-        c = new Comentario(""
-                ,"Ferdinando Garcia"
-                ,"Ótima pessoa, gosteis muito da comanhia"
-                );*/
         return list;
     }
 
@@ -422,7 +411,13 @@ public class PerfilClienteFragment extends Fragment {
                    cliente = response.body();
                    String[] nome = cliente.getNome().split(" ");
                    nomeCliente.setText(nome[0]);
-                   txtNotaPerf.setText(cliente.getNota()+",0");
+
+                   String v = cliente.getNota();
+                   if (v.length() == 1){
+                       txtNotaPerf.setText(cliente.getNota()+",0");
+                   }else {
+                       txtNotaPerf.setText(cliente.getNota());
+                   }
 
                    textInputNome.getEditText().setText(cliente.getNome());
                    //textInputNome.getEditText().setTextColor(R.color.black);
@@ -436,6 +431,21 @@ public class PerfilClienteFragment extends Fragment {
                    textInputComplemento.getEditText().setText(cliente.getEndereco().getComplemento());
 
                    editTextCpf.getEditText().setText(cliente.getCpf());
+
+                   //Preenchendo Lista de comentarios
+                   listaCometarios = new ArrayList<>(cliente.getComentarios());
+
+                   // Verificando se lista esta vazia
+                   if (listaCometarios.isEmpty()){
+                       //  AdapterListViewComentario adapter = new AdapterListViewComentario(this.getActivity(),null);
+                   }else {
+                       // Chamando Adaptador para preenchimento do list View
+                       AdapterListViewComentario adapter = new AdapterListViewComentario(getContext(),listaCometarios);
+                       // Setenado adptador no list view
+                       listViewComentarios.setAdapter(adapter);
+                       View current = getActivity().getCurrentFocus();
+                       if (current != null) current.clearFocus();
+                   }
 
 
                    getFoto();

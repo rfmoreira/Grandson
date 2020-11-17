@@ -156,10 +156,15 @@ public class HomeClienteFragment extends Fragment {
                     }else {
                         paceirosFiltrados.addAll(lListaParceiro);
                         listView.setVisibility(View.VISIBLE);
-                        // Chamando Adaptador para preenchimento do list View
-                        AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),paceirosFiltrados);
-                        // Setenado adptador no list view
-                        listView.setAdapter(adapter);
+                        try {
+                            // Chamando Adaptador para preenchimento do list View
+                            AdapterListVewHomeCliente adapter = new AdapterListVewHomeCliente(getContext(),paceirosFiltrados);
+                            // Setenado adptador no list view
+                            listView.setAdapter(adapter);
+                        }catch (Exception e){
+                            Log.i("Erro", e.getMessage());
+                        }
+
 
                     }
 

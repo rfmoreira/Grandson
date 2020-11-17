@@ -21,7 +21,6 @@
         <activity android:name=".View.PerfilParceiro" />
         <activity android:name=".View.EditarSenha" />
         <activity android:name=".View.EditarCartaoCredito" />
-        <activity android:name=".View.CadastroClienteFoto" />
         <activity android:name=".View.CadastroCliente2" />
         <activity android:name=".View.ApresentacaoGrandson" />
         <activity android:name=".View.AvaliacaoParceiro" />
@@ -45,13 +44,6 @@
         <activity
             android:name=".View.DadosBancarioCliente"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".View.DadosBancarioColaborador"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".View.CadastroColaborador"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".View.Cadastro" />
         <activity android:name=".View.Grandson">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

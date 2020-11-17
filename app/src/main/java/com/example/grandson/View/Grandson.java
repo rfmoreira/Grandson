@@ -28,11 +28,13 @@ public class Grandson extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-    public void onClickCadastro(View V){
-        Intent intent = new Intent(getApplicationContext(),CadastroCliente.class);
-        startActivity(intent);
-
+        btCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),CadastroCliente.class);
+                startActivity(intent);
+            }
+        });
     }
 }

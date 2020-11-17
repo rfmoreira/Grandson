@@ -1,5 +1,6 @@
 package com.example.grandson.Services;
 
+import com.example.grandson.Model.CancelarServico;
 import com.example.grandson.Model.FormEditarCliente;
 import com.example.grandson.Model.ModelDetalharServico;
 import com.example.grandson.Model.FormAvaliacao;
@@ -99,6 +100,6 @@ public interface RetrofitServiceGrandson {
     Call<ResponseBody> avaliarParceiro(@Header("Authorization") String auth, @Path("id") int id ,@Body FormAvaliacao formAvaliacao);
 
     @PUT("cliente/servico/cancelar/{id}")
-    Call<Resposta> cancelarServico(@Header("Authorization") String auth, @Path("id") int id);
+    Call<Resposta> cancelarServico(@Header("Authorization") String auth, @Path("id") int id, @Body CancelarServico cancelarServico);
 
 }

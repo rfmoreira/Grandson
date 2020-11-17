@@ -2,25 +2,34 @@ package com.example.grandson.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.grandson.Api.RetrofitClientGrandson;
+import com.example.grandson.Model.CancelarServico;
 import com.example.grandson.Model.ModelDetalharServico;
 import com.example.grandson.Model.Parceiro;
 import com.example.grandson.Model.Resposta;
 import com.example.grandson.R;
 import com.example.grandson.Services.RetrofitServiceGrandson;
+import com.example.grandson.Utils.CancelarDialog;
 import com.example.grandson.Utils.MetodosCadastro;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.text.DecimalFormat;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -39,6 +48,9 @@ public class DetalharServico extends AppCompatActivity {
 
     private String auth;
     private int idServico;
+
+    private TextInputLayout comentCancel;
+    CancelarServico cancelarServico = new CancelarServico();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +82,42 @@ public class DetalharServico extends AppCompatActivity {
         bt_cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cancelarServico();
+                //cancelarServico();
+                openDialog();
             }
         });
 
     }
 
 
+    private void openDialog(){
+        //CancelarDialog cancelarDialog = new CancelarDialog();
+        //cancelarDialog.show(getSupportFragmentManager(), "cancelar dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.cancelar_dialog, null);
+
+        comentCancel = view.findViewById(R.id.comentCancel);
+
+        builder.setView(view)
+                .setTitle("Motivo Cancelamento")
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        cancelarServico.setMotivo(comentCancel.getEditText().getText().toString());
+                        cancelarServico();
+
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
 
     private void getServico(){
 
@@ -92,16 +133,27 @@ public class DetalharServico extends AppCompatActivity {
                     detalharServico = response.body();
 
                     nomeParceiro.setText(detalharServico.getNome());
-                    txtNotaParceiro.setText(detalharServico.getNota());
+
+                    String v = detalharServico.getNota();
+                    if (v.length() == 1){
+                        txtNotaParceiro.setText(detalharServico.getNota()+",0");
+                    }else {
+                        txtNotaParceiro.setText(detalharServico.getNota());
+                    }
                     String[] data = detalharServico.getDia().split("-");
                     txtDataServico.setText(data[2]+"/"+data[1]+"/"+data[0]);
                     String hora = detalharServico.getHorario();
                     int i = hora.length();
                     txtHoraServico.setText(hora.substring(0,i-3));
-                    String valor = String.valueOf(detalharServico.getValor());
-                    txtValorServico.setText("R$ "+valor.replace(".",",")+"0");
+                    //String valor = String.valueOf(detalharServico.getValor());
+                    //txtValorServico.setText("R$ "+valor.replace(".",",")+"0");
+
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    txtValorServico.setText("R$ "+String.valueOf(df.format(Double.valueOf(detalharServico.getValor()))));
+
                     String qtdHoras = String.valueOf(detalharServico.getQuantidadeHoras()).replace(".",":");
                     txtQtdHorasServico.setText(qtdHoras+"0");
+
                     String cep = MetodosCadastro.addMask(String.valueOf(detalharServico.getEndereco().getCep()),"##.###-###");
                     txtCepServico.setText(cep);
                     txtEnderecoServico.setText(detalharServico.getEndereco().getEndereco());
@@ -137,22 +189,24 @@ public class DetalharServico extends AppCompatActivity {
         //Instanciando a interface
         RetrofitServiceGrandson restService = RetrofitClientGrandson.getService();
         //Passando os dados para consulta
-        Call<Resposta> call = restService.cancelarServico("Bearer "+auth,idServico);
+        Call<Resposta> call = restService.cancelarServico("Bearer "+auth,idServico, cancelarServico);
 
         call.enqueue(new Callback<Resposta>() {
             @Override
             public void onResponse(Call<Resposta> call, Response<Resposta> response) {
                 if(response.isSuccessful()){
+                    Log.i("Sucesso",response.body().getMensagem());
                     Toast.makeText(DetalharServico.this, response.body().getMensagem(), Toast.LENGTH_SHORT).show();
                     finish();
+
                 }else {
-                    Toast.makeText(DetalharServico.this, "Erro", Toast.LENGTH_SHORT).show();
+                    Log.i("Erro",response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<Resposta> call, Throwable t) {
-                Toast.makeText(DetalharServico.this, "Falha", Toast.LENGTH_SHORT).show();
+                Log.i("Falha",t.getMessage());
             }
         });
     }

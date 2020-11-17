@@ -97,7 +97,6 @@ public class AvaliacaoParceiro extends AppCompatActivity {
                 Toast.makeText(AvaliacaoParceiro.this, "Falha", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 }
